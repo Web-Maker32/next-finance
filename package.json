@@ -6,17 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "json-server": "json-server --watch db.json --port 3100 --delay 3000"
   },
   "dependencies": {
+    "json-server": "^0.17.4",
+    "lucide-react": "^1.7.0",
     "next": "16.2.1",
+    "next-themes": "^0.4.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-cookie": "^8.1.0",
+    "react-dom": "19.2.4",
+    "universal-cookie": "^8.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/forms": "^0.5.11",
+    "autoprefixer": "^10.4.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
-    "tailwindcss": "^4"
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0"
   }
 }
