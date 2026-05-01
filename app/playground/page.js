@@ -9,6 +9,11 @@ import Checkbox from "@/components/checkbox";
 import Select from "@/components/select";
 import Saprator from "@/components/saprator";
 import Skeleton from "@/components/skeleton";
+
+export const metadata = {
+  title: "Playground",
+};
+
 export default function Page() {
    
   return (
@@ -63,9 +68,9 @@ export default function Page() {
          <Button variant="outline">hello</Button>
           <Button variant="ghost">hello</Button>
 
-          <Button sizes="xs">hello</Button>
-          <Button sizes="sm">hello</Button>
-          <Button sizes="lg">hello</Button>
+          <Button size="sm">hello</Button>
+          <Button size="base">hello</Button>
+          <Button size="lg">hello</Button>
        </div>
        </div>
 

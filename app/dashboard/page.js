@@ -3,6 +3,13 @@ import TransactionList from "./components/transaction-list";
 import TransactionListFallback from "./components/transaction-listfallback";
 import Trend from "./components/trend";
 import TrendFallback from "./components/trend-fallback";
+import Link from "next/link";
+import { PlusCircle } from "lucide-react";
+import { sizes, variants } from "@/libs/veriant";
+
+export const metadata = {
+  title: "Dashboard",
+};
 
 export default function page() {
   return (
@@ -31,7 +38,11 @@ export default function page() {
     </section>
 
 <section className="flex justify-between items-center mb-8">
-    <h1 class>Transactions</h1>
+    <h1 className="text-2xl">Transactions</h1>
+    <Link href="/dashboard/transactions/add" className={`flex items-center space-x-1 ${variants['outline']} ${sizes['sm']}`}>
+    <PlusCircle className="w-4 h-4"/>
+    <div>Add</div>
+    </Link>
 </section>
 
 
