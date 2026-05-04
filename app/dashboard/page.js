@@ -39,7 +39,7 @@ export default function page() {
 
 <section className="flex justify-between items-center mb-8">
     <h1 className="text-2xl">Transactions</h1>
-    <Link href="/dashboard/transactions/add" className={`flex items-center space-x-1 ${variants['outline']} ${sizes['sm']}`}>
+    <Link href="./dashboard/transactions/add" className={`flex items-center space-x-1 ${variants['outline']} ${sizes['sm']}`}>
     <PlusCircle className="w-4 h-4"/>
     <div>Add</div>
     </Link>
