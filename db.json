@@ -31,6 +31,14 @@
       "description": "Rent",
       "category": "Housing",
       "created_at": "2024-05-10T23:00:00"
+    },
+    {
+      "id": 5,
+      "amount": 600,
+      "type": "Expense",
+      "description": "paying for stuff",
+      "category": "Health",
+      "created_at": "2025-04-02T00:00:00"
     }
   ],
   "trends": [
@@ -56,3 +64,4 @@
     }
   ]
 }
+
