@@ -7,9 +7,6 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 
-export const metadata = {
-  title: "Dashboard",
-};
 
 export default function page() {
   return (

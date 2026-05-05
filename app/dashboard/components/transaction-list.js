@@ -18,7 +18,12 @@ const date = transaction.created_at ? transaction.created_at.split("T")[0] : 'un
 
 export default async function TransactionList() {
   const response = await fetch(
-    `${process.env.API_URL}/transactions`
+    `${process.env.API_URL}/transactions`,
+    {
+      next: {
+        tags: ['transactions-list'],
+      },
+    }
   )
   const transactions = await response.json()
   const grouped = groupAndSumTransactionsByDate(transactions)

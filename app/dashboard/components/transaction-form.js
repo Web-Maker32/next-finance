@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/libs/validation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { purgeTransactionListCache } from "@/libs/action";
 
 export default function TransactionForm() {
 
@@ -22,12 +24,13 @@ export default function TransactionForm() {
     resolver: zodResolver(transactionSchema)
   })
 
+  const router = useRouter()
   const [isSaving, setSaving] = useState(false)
 
   const onSubmit = async (data) => {
      setSaving(true)
      try{
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`,{
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`,{
           method:'POST',
           headers:{
             'Content-Type':'application/json'
@@ -37,8 +40,10 @@ export default function TransactionForm() {
             created_at: `${data.created_at}T00:00:00`
           })
         })  
+        await purgeTransactionListCache()
+        router.push('/dashboard')
      }finally{
-      setSaving(false)
+      setSaving(false) 
      }
   }
 

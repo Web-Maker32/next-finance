@@ -39,6 +39,22 @@
       "description": "paying for stuff",
       "category": "Health",
       "created_at": "2025-04-02T00:00:00"
+    },
+    {
+      "type": "Investment",
+      "category": "Education",
+      "amount": 14000,
+      "description": "for the future",
+      "created_at": "2025-3-29T00:00:00",
+      "id": 6
+    },
+    {
+      "type": "Expense",
+      "category": "Transport",
+      "amount": 120,
+      "description": "going home from school ",
+      "created_at": "2025-3-29T00:00:00",
+      "id": 7
     }
   ],
   "trends": [
@@ -64,4 +80,3 @@
     }
   ]
 }
-
