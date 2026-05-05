@@ -11,6 +11,7 @@ import { transactionSchema } from "@/libs/validation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { purgeTransactionListCache } from "@/libs/action";
+import { FormError } from "@/components/form-error";
 
 export default function TransactionForm() {
 
@@ -55,31 +56,35 @@ export default function TransactionForm() {
                 <Select {...register('type')}>
                 {types.map(type => <option key={type}>{type}</option>)}
                 </Select>
-              </div>  
+                <FormError error={errors.type} />
+                </div>  
+
+                
               <div>
                <Label className="mb-1">Category</Label>
                 <Select {...register('category')}>
                 {categories.map(category => <option key={category}>{category}</option>)}
                 </Select>  
+                <FormError error={errors.category} />
               </div>  
             
 
             <div>
               <Label className="mb-1">Date</Label>
               <Input {...register('created_at')}/>
-              {errors.created_at && <p className="mt-1 text-red-500">{errors.created_at.message}</p>}
-            </div>
+              <FormError error={errors.created_at} />
+              </div>
 
             <div>
               <Label className="mb-1">Amount</Label>
               <Input type="number" {...register('amount')}/> 
-              {errors.amount && <p className="mt-1 text-red-500">{errors.amount.message}</p>}
-            </div>
+              <FormError error={errors.amount} />
+              </div>
 
             <div className="col-span-1 md:col-span-2">
               <Label className="mb-1">Description</Label>
               <Input {...register('description')}/> 
-              {errors.description && <p className="mt-1 text-red-500">{errors.description.message}</p>}
+              <FormError error={errors.description} />
             </div>
           </div>
 
