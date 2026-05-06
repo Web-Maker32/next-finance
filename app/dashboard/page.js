@@ -6,9 +6,16 @@ import TrendFallback from "./components/trend-fallback";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
+import { createClient } from "@/libs/supabase/server";
 
+export default async function page() {
 
-export default function page() {
+  const client = await createClient();
+
+  console.log(
+    await client.from('active_transactions').select()
+  );
+  
   return (
     <>
    

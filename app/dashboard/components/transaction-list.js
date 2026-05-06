@@ -1,6 +1,7 @@
 import TransactionItem from "@/components/transaction-item"
 import TransactionItemsSummary from "@/components/transation-items-summary"
 import Saprator from "@/components/saprator"
+import { createClient } from "@/libs/supabase/server"
 
 const groupAndSumTransactionsByDate = (transactions) => {
   const grouped = {}
@@ -17,15 +18,8 @@ const date = transaction.created_at ? transaction.created_at.split("T")[0] : 'un
 }
 
 export default async function TransactionList() {
-  const response = await fetch(
-    `${process.env.API_URL}/transactions`,
-    {
-      next: {
-        tags: ['transactions-list'],
-      },
-    }
-  )
-  const transactions = await response.json()
+  const supabase = await createClient()
+  const { data: transactions } = await supabase.from('active_transactions').select('*').order('created_at', { ascending: true })
   const grouped = groupAndSumTransactionsByDate(transactions)
   
   return (
