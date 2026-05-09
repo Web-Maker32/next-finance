@@ -12,9 +12,6 @@ export default async function page() {
 
   const client = await createClient();
 
-  console.log(
-    await client.from('active_transactions').select()
-  );
   
   return (
     <>
