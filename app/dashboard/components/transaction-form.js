@@ -22,7 +22,7 @@ export default function TransactionForm() {
     formState: { errors },
   } = useForm({
     mode: 'onTouched',
-    resolver: zodResolver(transactionSchema)
+   resolver: zodResolver(transactionSchema)
   })
 
   const router = useRouter()
@@ -32,16 +32,13 @@ export default function TransactionForm() {
   const onSubmit = async (data) => {
      setSaving(true)
      setLastError()
-     try{
-        await createTranscation(data)
+     const result = await createTranscation(data)
+     if (!result.success) {
+        setLastError({ message: result.error })
+     } else {
         router.push('/dashboard')
-      }
-      catch(error){
-        setLastError(error)
-      }
-      finally{
-      setSaving(false) 
      }
+     setSaving(false)
   }
 
     return (
