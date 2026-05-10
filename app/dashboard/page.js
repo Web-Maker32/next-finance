@@ -7,6 +7,8 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 import { createClient } from "@/libs/supabase/server";
+import { ErrorBoundary } from "react-error-boundary";
+import { types } from "@/libs/consts";
 
 export default async function page() {
 
@@ -21,21 +23,13 @@ export default async function page() {
    </section>
 
     <section className="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+    {types.map((type) => (
+    <ErrorBoundary key={type} fallback={<div className="text-red-500">cannot fetch {type} trend data</div>}>
     <Suspense fallback={<TrendFallback />}>
-     <Trend type="Income" />
+     <Trend type={type} />
     </Suspense>
-
-    <Suspense fallback={<TrendFallback />}> 
-      <Trend type="Expense" />
-    </Suspense>
-
-    <Suspense fallback={<TrendFallback />}> 
-      <Trend type="Savings" />
-    </Suspense>
-    
-    <Suspense fallback={<TrendFallback />}> 
-      <Trend type="Investment" />
-    </Suspense>
+    </ErrorBoundary>
+    ))}
     </section>
 
 <section className="flex justify-between items-center mb-8">
