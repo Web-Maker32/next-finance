@@ -8,7 +8,7 @@ export async function createTranscation(formData) {
   const validated = transactionSchema.safeParse(formData)
 
 if (!validated.success) {
-  return { success: false, error: 'Invalid data' }
+  throw new Error('Invalid data')
 }
 
   const supabase = await createClient() 
@@ -16,9 +16,8 @@ if (!validated.success) {
    .insert(validated.data)
 
   if (error) {
-    return { success: false, error: 'Failed to create transaction' }
+    throw new Error('Failed to create transaction')
   }
   
   revalidatePath('/dashboard')
-  return { success: true }
 }
