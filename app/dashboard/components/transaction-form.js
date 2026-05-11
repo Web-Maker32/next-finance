@@ -8,7 +8,7 @@ import Button  from "@/components/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/libs/validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTranscation, purgeTransactionListCache } from "@/libs/action";
 import { FormError } from "@/components/form-error";
@@ -18,7 +18,8 @@ export default function TransactionForm() {
    const {
     register,
     handleSubmit,
-    watch,
+    watch, 
+    setValue,
     formState: { errors },
   } = useForm({
     mode: 'onTouched',
@@ -28,6 +29,7 @@ export default function TransactionForm() {
   const router = useRouter()
   const [isSaving, setSaving] = useState(false)
   const [lastError, setLastError] = useState()
+  const type = watch('type')
 
   const onSubmit = async (data) => {
      setSaving(true)
@@ -46,7 +48,13 @@ export default function TransactionForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label className="mb-1">Type</Label>
-                <Select {...register('type')}>
+                <Select {...register('type',{
+                  onChange: (e) => {
+                    if (e.target.value !== 'Expense') {
+                      setValue('category', '')
+                    }
+                  }
+                })}>
                 {types.map(type => <option key={type}>{type}</option>)}
                 </Select>
                 <FormError error={errors.type} />
@@ -55,7 +63,8 @@ export default function TransactionForm() {
                 
               <div>
                <Label className="mb-1">Category</Label>
-                <Select {...register('category')}>
+                <Select {...register('category')} disabled={type !== 'Expense'}>
+                 <option value="">Select a category</option>
                 {categories.map(category => <option key={category}>{category}</option>)}
                 </Select>  
                 <FormError error={errors.category} />
