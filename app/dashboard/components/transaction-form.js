@@ -32,6 +32,8 @@ export default function TransactionForm() {
   const type = watch('type')
 
   const onSubmit = async (data) => {
+    console.log(data)
+    return
      setSaving(true)
      setLastError()
      const result = await createTranscation(data)
@@ -51,7 +53,7 @@ export default function TransactionForm() {
                 <Select {...register('type',{
                   onChange: (e) => {
                     if (e.target.value !== 'Expense') {
-                      setValue('category', '')
+                      setValue("category", "")
                     }
                   }
                 })}>
