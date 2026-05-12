@@ -9,6 +9,7 @@ import { sizes, variants } from "@/libs/veriant";
 import { createClient } from "@/libs/supabase/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { types } from "@/libs/consts";
+import Range from "./components/range";
 
 export default async function page() {
 
@@ -18,8 +19,12 @@ export default async function page() {
   return (
     <>
    
-   <section className="mb-8">
+   <section className="mb-8 flex justify-between items-center">
     <h1 className="text-4xl font-semibold">Summary</h1>
+    <aside>
+    <Range/>
+    </aside>
+
    </section>
 
     <section className="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
