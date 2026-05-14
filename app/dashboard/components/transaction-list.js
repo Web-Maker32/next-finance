@@ -2,25 +2,19 @@ import TransactionItem from "@/components/transaction-item"
 import TransactionItemsSummary from "@/components/transation-items-summary"
 import Saprator from "@/components/saprator"
 import { createClient } from "@/libs/supabase/server"
+import { groupAndSumTransactionsByDate } from "@/libs/utils"
 
-const groupAndSumTransactionsByDate = (transactions) => {
-  const grouped = {}
-  for (const transaction of transactions) {
-const date = transaction.created_at ? transaction.created_at.split("T")[0] : 'unknown-date';
-    if(!grouped[date]) {
-      grouped[date] = {transactions: [], amount: 0}
-    }
-    grouped[date].transactions.push(transaction)
-    const amount = transaction.type === 'Expense' ? -transaction.amount : transaction.amount
-    grouped[date].amount += amount
-  }
-  return grouped
-}
-
-export default async function TransactionList() {
+export default async function TransactionList({ range }) {
   const supabase = await createClient()
-  const { data: transactions } = await supabase.from('active_transactions').select('*').order('created_at', { ascending: false})
-  const grouped = groupAndSumTransactionsByDate(transactions)
+  let { data: active_transactions, error } = await supabase
+    .rpc('fetch_transactions', {
+    //limit_arg, 
+    //offset_arg, 
+    range_arg: range
+  })
+if (error) throw new Error("We can't fetch transactions")
+
+  const grouped = groupAndSumTransactionsByDate(active_transactions)
   
   return (
     <div className="space-y-8">

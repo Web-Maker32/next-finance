@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/libs/validation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTranscation, purgeTransactionListCache } from "@/libs/action";
+import { createTranscation} from "@/libs/action";
 import { FormError } from "@/components/form-error";
 
 export default function TransactionForm() {
@@ -31,16 +31,19 @@ export default function TransactionForm() {
   const [lastError, setLastError] = useState()
   const type = watch('type')
 
-  const onSubmit = async (data) => {
-     setSaving(true)
-     setLastError()
-     const result = await createTranscation(data)
-     if (!result.success) {
-        setLastError({ message: result.error })
-     } else {
-        router.push('/dashboard')
-     }
-     setSaving(false)
+    const onSubmit = async (data) => {
+    setSaving(true)
+    setLastError()
+    try {
+      await createTranscation(data)
+      router.push('/dashboard')
+    } 
+    catch (error) {
+      setLastError(error)
+    }
+    finally {
+      setSaving(false)
+    }
   }
 
     return (
