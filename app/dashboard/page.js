@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import TransactionList from "./components/transaction-list";
 import TransactionListFallback from "./components/transaction-listfallback";
 import Trend from "./components/trend";
 import TrendFallback from "./components/trend-fallback";
@@ -9,6 +8,7 @@ import { sizes, variants } from "@/libs/veriant";
 import { ErrorBoundary } from "react-error-boundary";
 import { types } from "@/libs/consts";
 import Range from "./components/range";
+import TransactionListWarper from "./components/transaction-list-warper";
 
 export const dynamic = 'force-dynamic'
 
@@ -16,15 +16,15 @@ export default async function page({ searchParams }) {
   const params = await searchParams
   const range = params?.range ?? 'last30days'
   return (
-    <>
-      <section className="mb-8 flex justify-between items-center">
+    <div className="space-y-8">
+      <section className="flex justify-between items-center">
         <h1 className="text-4xl font-semibold">Summary</h1>
         <aside>
           <Range />
         </aside>
       </section>
 
-      <section className="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-8">
         {types.map((type) => (
           <ErrorBoundary
             key={type}
@@ -39,7 +39,7 @@ export default async function page({ searchParams }) {
         ))}
       </section>
 
-      <section className="flex justify-between items-center mb-8">
+      <section className="flex justify-between items-center">
         <h1 className="text-2xl">Transactions</h1>
         <Link
           href="./dashboard/transactions/add"
@@ -51,8 +51,8 @@ export default async function page({ searchParams }) {
       </section>
 
       <Suspense fallback={<TransactionListFallback />}>
-        <TransactionList range={range} />
+        <TransactionListWarper range={range} />
       </Suspense>
-    </>
+    </div>
   );
 }
