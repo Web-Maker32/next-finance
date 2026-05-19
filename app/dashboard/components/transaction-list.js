@@ -7,17 +7,32 @@ import { groupAndSumTransactionsByDate } from "@/libs/utils";
 import { useState } from "react";
 import  Button from "@/components/button";
 import { fetchTransactions } from "@/libs/action";
+import { LoaderCircle } from "lucide-react";
 
 export default function TransactionList({ range, initialTransactions }) {
   const [transactions, setTransactions] = useState(initialTransactions)
-  const [offset, setOffset] = useState(initialTransactions.length)
+  const [buttonHidden, setButtonHidden] = useState(initialTransactions.
+  length === 0)
+  const [loading, setLoading] = useState(false)
   const grouped = groupAndSumTransactionsByDate(transactions)
  
   const handleClick = async (e) => {
-    const nextTransaction = await fetchTransactions(range, offset, 10 )
-    setOffset(prevValue => prevValue + 10)
-    setTransactions(prevTransactions => [...prevTransactions, ...nextTransaction])
+    setLoading(true)
+    let nextTransactions = null
+    try {
+    nextTransactions = await fetchTransactions(range, transactions.length, 10 )
+    setButtonHidden(nextTransactions.length === 0)
+    setTransactions(prevTransactions => [...prevTransactions, ...nextTransactions])
+
+    } finally {
+      setLoading(false)
+    }
   }
+
+    const handleRemove = (id) => () => {
+       setTransactions(prev => [...prev].filter(t => t.id !== id))
+  }
+    
 
   return (
     <div className="space-y-8">
@@ -36,23 +51,28 @@ export default function TransactionList({ range, initialTransactions }) {
             {data.transactions.map((transaction) => (
               <div key={transaction.id}>
                 <TransactionItem
+                  id={transaction.id}
                   type={transaction.type}
                   category={transaction.category}
                   description={transaction.description}
                   amount={transaction.amount}
-                />
+                  onRemoved={handleRemove(transaction.id)}
+                  />
               </div>
             ))}
           </div>
         </div>
       ))}
       {transactions.length === 0 && <div className="text-center 
-      text-gray-300 dark:text-gray-500">No transactions found</div>}
-      <div className="flex justify-center">
-        <Button variant="ghost" onClick={handleClick}>
-          Load More
+      text-gray-400 dark:text-gray-500">No transactions found</div>}
+      {!buttonHidden && <div className="flex justify-center">
+        <Button variant="ghost" onClick={handleClick} disabled={loading}>
+         <div className="flex items-center space-x-1">
+          {loading && <LoaderCircle className="animate-spin"/>}
+          <div>Load More</div>
+         </div>
         </Button>
-      </div>
+      </div>}
     </div>
   );
 }

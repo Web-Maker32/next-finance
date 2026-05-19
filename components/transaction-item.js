@@ -1,7 +1,8 @@
 import { useFormatCurrency } from "@/hooks/use-format-currency"
 import { HandCoins, Wallet, Vault, Landmark } from "lucide-react"
+import TransactionItemRemoveButton from "./transaction-item-remove-button"
 
-export default function TransactionItem({type,category,amount,description}) {
+export default function TransactionItem({ onRemoved, id,type,category,amount,description}) {
    
   
   const typesMap = {
@@ -14,12 +15,12 @@ export default function TransactionItem({type,category,amount,description}) {
       colors: 'text-red-500 dark:text-red-400'
     },
     'Savings': {
-      icon: Vault,
-      colors: 'text-indigo-500 dark:text-indigo-400'
+       icon: Vault,
+      colors: 'text-yellow-500 dark:text-yellow-400'
     },
     'Investment': {
       icon: Landmark,
-      colors: 'text-yellow-500 dark:text-yellow-400'
+      colors: 'text-indigo-500 dark:text-indigo-400'
     }
   }
   const IconComponent = typesMap[type].icon
@@ -45,7 +46,9 @@ export default function TransactionItem({type,category,amount,description}) {
         {formattedAmount}
       </div>
 
-      <div className="min-w-[50px] flex justify-end">...</div>
+      <div className="min-w-[100px] flex justify-end">
+        <TransactionItemRemoveButton id={id} onRemoved={onRemoved} />
+      </div>
     </div>)
 }
 

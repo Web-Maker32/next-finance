@@ -33,3 +33,14 @@ export async function fetchTransactions(range, offset = 0, limit = 10) {
   if (error) throw new Error("We can't fetch transactions");
   return data;
 }
+
+
+export async function deleteTransaction(id) {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from("active_transactions")
+    .delete()
+    .eq("id", id)
+  if (error) throw new Error(`Could not delete transaction ${id}`)
+  revalidatePath("/dashboard")
+} 
