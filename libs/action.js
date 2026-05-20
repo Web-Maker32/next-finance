@@ -14,6 +14,25 @@ export async function createTranscation(formData) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
+    .update(validated.data);
+
+  if (error) {
+    throw new Error("Failed to create transaction");
+  }
+
+  revalidatePath("/dashboard");
+}
+
+export async function updateTranscation(id, formData) {
+  const validated = transactionSchema.safeParse(formData);
+
+  if (!validated.success) {
+    throw new Error("Invalid data");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("active_transactions")
     .insert(validated.data);
 
   if (error) {
@@ -22,6 +41,7 @@ export async function createTranscation(formData) {
 
   revalidatePath("/dashboard");
 }
+
 
 export async function fetchTransactions(range, offset = 0, limit = 10) {
   const supabase = await createClient();

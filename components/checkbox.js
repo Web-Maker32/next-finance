@@ -23,7 +23,7 @@ export default function Checkbox({ checked = false, onChange, className = '', ..
       />
       <div
         tabIndex={0}
-        className="w-4 h-4 border rounded cursor-pointer transition-colors flex items-center justify-center outline-none"
+        className="w-4 h-4 border rounded cursor-pointer transition-colors flex items-center justify-center outline-none disabled:opacity-75"
         style={{
           backgroundColor: isChecked ? 'var(--bg-checkbox-checked)' : 'var(--bg-checkbox)',
           borderColor: isChecked ? 'var(--bg-checkbox-checked)' : 'var(--border-checkbox)'

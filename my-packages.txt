@@ -1,0 +1,25 @@
+next-finance@0.1.0 /home/webmaker/projects/next-finance
+├── @emnapi/runtime@1.9.1 extraneous
+├── @faker-js/faker@10.4.0
+├── @hookform/resolvers@5.2.2
+├── @supabase/ssr@0.10.2
+├── @supabase/supabase-js@2.105.3
+├── @tailwindcss/forms@0.5.11
+├── autoprefixer@10.5.0
+├── dotenv@17.4.2
+├── eslint-config-next@16.2.1
+├── eslint@9.39.4
+├── json-server@0.17.4
+├── lucide-react@1.7.0 invalid: "^0.400.0" from the root project
+├── next-themes@0.4.6
+├── next@16.2.1
+├── postcss@8.5.8
+├── react-cookie@8.1.0
+├── react-dom@19.2.4
+├── react-error-boundary@6.1.1
+├── react-hook-form@7.75.0
+├── react@19.2.4
+├── tailwindcss@3.4.19
+├── universal-cookie@8.1.0
+└── zod@4.4.2
+
