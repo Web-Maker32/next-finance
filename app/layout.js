@@ -27,7 +27,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en" 
-      className={theme === 'dark' ? 'dark' : ''}
+      className={theme === 'dark' ? 'dark' : 'light'}
     >
       <LayoutBody>
         {children}

@@ -1,3 +1,5 @@
+'use client'
+
 import Button from "./button";
 import { LoaderCircle, X } from 'lucide-react';
 import { deleteTransaction } from "@/libs/action";

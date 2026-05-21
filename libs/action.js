@@ -14,7 +14,7 @@ export async function createTranscation(formData) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
-    .update(validated.data);
+    .insert(formData);
 
   if (error) {
     throw new Error("Failed to create transaction");
@@ -33,8 +33,8 @@ export async function updateTranscation(id, formData) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
-    .insert(validated.data);
-
+    .update(formData)
+    .eq("id", id);
   if (error) {
     throw new Error("Failed to create transaction");
   }
