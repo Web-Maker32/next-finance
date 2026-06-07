@@ -3,9 +3,9 @@ import DarkModeToggle from "./darkmodetoggle";
 import getServerTheme from "@/hooks/use-server-dark-mode";
 import { createClient } from "@/libs/supabase/server";
 import Button from "./button";
-import { CircleUser } from "lucide-react";
-import { KeyRound } from "lucide-react";
+import { CircleUser, LogIn } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
+import { SignOutButton } from "@/components/signout";
 
 export default async function Header({className}) {
   
@@ -24,7 +24,8 @@ export default async function Header({className}) {
       <CircleUser className="w-6 h-6 "/>
       <span>{user?.email}</span>
      </Button>}  
-     {!user && <Link href="/login" className={`${variants['ghost']} ${sizes['sm']}`}><KeyRound/></Link>}  
+     {user && <SignOutButton />}
+     {!user && <Link href="/login" className={`${variants['ghost']} ${sizes['sm']}`}><LogIn/></Link>}  
     </div>
     
     
