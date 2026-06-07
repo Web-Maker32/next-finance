@@ -22,7 +22,7 @@ export default function Trend({
   )
 
   const formatCurrency = (amount) =>
-    new Intl.NumberFormat('en-us', {style: 'currency', currency: 'EUR'}).format(amount)
+   new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR' }).format(amount);
 
   return <div>
     <div className={`font-semibold ${colorClasses[type]}`}>{type}</div>

@@ -9,11 +9,15 @@ import { ErrorBoundary } from "react-error-boundary";
 import { types } from "@/libs/consts";
 import Range from "./components/range";
 import TransactionListWarper from "./components/transaction-list-warper";
+import { createClient } from "@/libs/supabase/server";
 
 export const dynamic = 'force-dynamic'
 
 export default async function page({ searchParams }) {
   const params = await searchParams
+  const supabase = await createClient()
+  console.log(await supabase.auth.getUser())
+  
   const range = params?.range ?? 'last30days'
   return (
     <div className="space-y-8">

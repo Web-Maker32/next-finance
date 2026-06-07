@@ -64,3 +64,27 @@ export async function deleteTransaction(id) {
   if (error) throw new Error(`Could not delete transaction ${id}`)
   revalidatePath("/dashboard")
 } 
+
+export async function login(prevState, formData) {
+const supabase = await createClient()
+const email = formData.get("email")
+const {error} = supabase.auth.signInWithOtp({
+  email,
+  options: {
+    shouldCreateUser: true
+  }
+})
+ 
+
+if (error) {
+   return { 
+    error: true,
+    message: 'Error while authanticating',
+  }
+}
+
+return {
+   message: `Email sent to ${email}`
+}
+
+}
