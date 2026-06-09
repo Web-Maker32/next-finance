@@ -1,8 +1,6 @@
 'use client'
 
-import Input from "@/components/input";
-import Label from "@/components/label";
-import Select from "@/components/select";
+import Input, { Label, Select } from "@/components/input";
 import { categories, types } from "@/libs/consts";
 import Button  from "@/components/button";
 import { useForm } from "react-hook-form";

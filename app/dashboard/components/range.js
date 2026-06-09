@@ -1,7 +1,7 @@
 
 "use client";
 
-import Select from "@/components/select";
+import { Select } from "@/components/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function Range() {
