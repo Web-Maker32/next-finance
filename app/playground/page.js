@@ -1,12 +1,9 @@
 import Header from "@/components/header";
 import Trend from "@/components/trend";
-import Label from "@/components/label";
+import Input, { Checkbox, Label, Select } from "@/components/input";
 import TransactionItem from "@/components/transaction-item";
 import TransactionItemsSummary from "@/components/transation-items-summary";
 import Button from "@/components/button";
-import Input from "@/components/input";
-import Checkbox from "@/components/checkbox";
-import Select from "@/components/select";
 import Saprator from "@/components/saprator";
 import Skeleton from "@/components/skeleton";
 
