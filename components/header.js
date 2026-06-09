@@ -2,7 +2,6 @@ import Link from "next/link";
 import DarkModeToggle from "./darkmodetoggle";
 import getServerTheme from "@/hooks/use-server-dark-mode";
 import { createClient } from "@/libs/supabase/server";
-import Button from "./button";
 import { CircleUser, LogIn } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 import { SignOutButton } from "@/components/signout";
@@ -20,10 +19,10 @@ export default async function Header({className}) {
     
     <div className="flex items-center">
      <DarkModeToggle />
-     {user && <Button variant="ghost" size="sm" className="flex items-center space-x-1">
+     {user && <Link href='dashboard/settings' className={`flex items-center space-x-1 ${variants['ghost']} ${sizes['sm']}`}>
       <CircleUser className="w-6 h-6 "/>
       <span>{user?.email}</span>
-     </Button>}  
+     </Link>}  
      {user && <SignOutButton />}
      {!user && <Link href="/login" className={`${variants['ghost']} ${sizes['sm']}`}><LogIn/></Link>}  
     </div>

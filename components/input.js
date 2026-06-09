@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 export default forwardRef(function Input(props,ref) {
     const { className, type, ...restProps } = props; 
     return (
+      
       <input ref={ref} 
         {...restProps} 
         type={type} 

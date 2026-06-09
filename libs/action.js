@@ -95,3 +95,18 @@ export async function signOut() {
    const { error } = await supabase.auth.signOut()
    redirect('/login')
 }
+
+export async function uploadAvatar(formData) {
+  const supabase = await createClient()
+  const file = formData.get('file')
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${Math.random()}.${fileExt}`
+  const {error} = await supabase.storage
+  .from('avatar')
+  .upload(fileName, file)
+
+  if (error) {
+     throw new Error("Failed to upload avatar");
+
+  }
+}
