@@ -96,7 +96,7 @@ export async function signOut() {
    redirect('/login')
 }
 
-export async function uploadAvatar(formData) {
+export async function uploadAvatar(prevState, formData) {
   const supabase = await createClient()
   const file = formData.get('file')
   const fileExt = file.name.split('.').pop()
@@ -106,7 +106,13 @@ export async function uploadAvatar(formData) {
   .upload(fileName, file)
 
   if (error) {
-     throw new Error("Failed to upload avatar");
+    return {
+      error: true,
+      message: 'Failed to upload avatar',
+    }
+  }
 
+  return {
+    message: 'Avatar uploaded',
   }
 }
