@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Button from "./button";
 import { LoaderCircle, X } from 'lucide-react';
@@ -16,7 +16,9 @@ export default function TransactionItemRemoveButton({ id, onRemoved }) {
         try {
             setLoading(true)
             await deleteTransaction(id);
-            onRemoved()
+            if (onRemoved) {
+                onRemoved();
+            }
         } finally {
             
             setLoading(false)

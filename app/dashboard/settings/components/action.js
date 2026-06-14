@@ -62,6 +62,9 @@ export async function deleteTransaction(id) {
     .from("active_transactions")
     .delete()
     .eq("id", id)
+      if (error) {
+    throw new Error(`Could not delete transaction ${id}`)
+  }
   revalidatePath("/dashboard")
 } 
 
@@ -158,8 +161,4 @@ export async function uploadAvatar(prevState, formData) {
      message: 'updated the user avatar'
    }
 
-}
-
-export async function updateSettings(prevState, formData) {
-  
 }

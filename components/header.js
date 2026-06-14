@@ -2,16 +2,17 @@ import Link from "next/link";
 import DarkModeToggle from "./darkmodetoggle";
 import getServerTheme from "@/hooks/use-server-dark-mode";
 import { createClient } from "@/libs/supabase/server";
-import { CircleUser, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 import { SignOutButton } from "@/components/signout";
+import Avatar from "@/components/avatar";
 
 export default async function Header({className}) {
   
   const theme = getServerTheme()
   const supabase = await createClient()
   const {data:{user}, error} = await supabase.auth.getUser()
-
+  
   
   return (
     <header className={`flex justify-between items-center ${className}`}>
@@ -20,7 +21,7 @@ export default async function Header({className}) {
     <div className="flex items-center">
      <DarkModeToggle />
      {user && <Link href='dashboard/settings' className={`flex items-center space-x-1 ${variants['ghost']} ${sizes['sm']}`}>
-      <CircleUser className="w-6 h-6 "/>
+      <Avatar />
       <span>{user?.email}</span>
      </Link>}  
      {user && <SignOutButton />}

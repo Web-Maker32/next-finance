@@ -5,10 +5,10 @@ import TransactionItem from "@/components/transaction-item";
 import TransactionItemsSummary from "@/components/transation-items-summary";
 import Button from "@/components/button";
 import Input from "@/components/input";
-import Checkbox from "@/components/checkbox";
-import Select from "@/components/select";
 import Saprator from "@/components/saprator";
 import Skeleton from "@/components/skeleton";
+import Select from "@/components/select";
+import Checkbox from "@/components/checkbox";
 
 export const metadata = {
   title: "Playground",
@@ -79,12 +79,12 @@ export default function Page() {
         <Saprator/>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label>Your name</Label>
+            <label>Your name</label>
           <Input type="text" placeholder='Type something in here'/>
           </div>
 
           <div>
-            <Label>City</Label>
+            <label>City</label>
           <Select>
             <option>Islamabad</option>
             <option>Lahore</option>
