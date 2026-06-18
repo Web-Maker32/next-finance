@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { transactionSchema } from "./validation";
+import { ranges } from "./consts";
 import { redirect } from "next/navigation";
 
 export async function createTranscation(formData) {
@@ -161,5 +162,32 @@ export async function uploadAvatar(prevState, formData) {
 }
 
 export async function updateSettings(prevState, formData) {
-  
+  const supabase = await createClient()
+
+  const name = formData.get("name")
+  const range = formData.get("range")
+
+  if (range && !ranges.some((r) => r.value === range)) {
+    return {
+      error: true,
+      message: "Invalid range selected",
+    }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    data: { name, range },
+  })
+
+  if (error) {
+    return {
+      error: true,
+      message: "Failed to update settings",
+    }
+  }
+
+  revalidatePath("/dashboard")
+
+  return {
+    message: "Settings updated",
+  }
 }

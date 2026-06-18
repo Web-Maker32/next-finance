@@ -6,7 +6,7 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 import { ErrorBoundary } from "react-error-boundary";
-import { types } from "@/libs/consts";
+import { defaultRange, types } from "@/libs/consts";
 import Range from "./components/range";
 import TransactionListWarper from "./components/transaction-list-warper";
 import { createClient } from "@/libs/supabase/server";
@@ -16,15 +16,16 @@ export const dynamic = 'force-dynamic'
 export default async function page({ searchParams }) {
   const params = await searchParams
   const supabase = await createClient()
-  console.log(await supabase.auth.getUser())
-  
-  const range = params?.range ?? 'last30days'
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const userRange = user?.user_metadata?.range ?? defaultRange
+  const range = params?.range ?? userRange
   return (
     <div className="space-y-8">
       <section className="flex justify-between items-center">
         <h1 className="text-4xl font-semibold">Summary</h1>
         <aside>
-          <Range />
+          <Range defaultValue={userRange} />
         </aside>
       </section>
 
