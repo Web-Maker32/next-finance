@@ -161,5 +161,30 @@ export async function uploadAvatar(prevState, formData) {
 }
 
 export async function updateSettings(prevState, formData) {
-  
+  try {
+    const supabase = await createClient()
+    
+    const name = formData.get('name')
+    const defaultView = formData.get('defaultView')
+
+    // 1. Update user metadata
+    const { error } = await supabase.auth.updateUser({
+      data: { name, defaultView }
+    })
+
+    if (error) throw error
+
+    // 2. CRITICAL: Refresh the layout session and break all Next.js router caches
+    revalidatePath('/', 'layout') 
+
+    return {
+      message: "Settings updated successfully!",
+      error: false,
+    }
+  } catch (error) {
+    return {
+      message: error.message || "Failed to update settings.",
+      error: true,
+    }
+  }
 }
