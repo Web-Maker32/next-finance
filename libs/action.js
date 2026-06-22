@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
-import { transactionSchema } from "./validation";
+import { profileSchema, settingsSchema, transactionSchema } from "./validation";
 import { redirect } from "next/navigation";
 
 export async function createTranscation(formData) {
@@ -160,31 +160,70 @@ export async function uploadAvatar(prevState, formData) {
 
 }
 
-export async function updateSettings(prevState, formData) {
-  try {
-    const supabase = await createClient()
-    
-    const name = formData.get('name')
-    const defaultView = formData.get('defaultView')
+export async function updateProfile(prevState, formData) {
+  const validated = profileSchema.safeParse({
+    name: formData.get("name"),
+  });
 
-    // 1. Update user metadata
-    const { error } = await supabase.auth.updateUser({
-      data: { name, defaultView }
-    })
-
-    if (error) throw error
-
-    // 2. CRITICAL: Refresh the layout session and break all Next.js router caches
-    revalidatePath('/', 'layout') 
-
+  if (!validated.success) {
     return {
-      message: "Settings updated successfully!",
-      error: false,
-    }
-  } catch (error) {
+      errors: validated.error.flatten().fieldErrors,
+    };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      name: validated.data.name,
+    },
+  });
+
+  if (error) {
     return {
-      message: error.message || "Failed to update settings.",
       error: true,
+      message: "Failed to update profile",
+      errors: {},
+    };
+  }
+
+  return {
+    message: "Updated profile",
+    errors: {},
+  };
+}
+
+export async function updateSettings(prevState, formData) {
+  const validated = settingsSchema.safeParse({
+    name: formData.get('name'),
+    defaultView: formData.get('defaultView')
+  })
+
+ if (!validated.success) {
+   return {
+     errors: validated.error.flatten().fieldErrors
+   }
+ }
+
+
+  const supabase = await createClient()
+  const {error} = await supabase.auth
+    .updateUser({
+      data: {
+        name: validated.data.name,
+        defaultView: validated.data.defaultView
+      }
+    })
+    
+  if (error) {
+    return{
+      error: true,
+      message: 'Failed updating setting',
+      errors: {}
     }
+  }
+
+  return {
+    message: 'Updated user settings',
+    errors: {}
   }
 }

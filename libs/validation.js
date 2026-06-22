@@ -1,5 +1,19 @@
 import { z } from "zod"
-import { categories, types } from "./consts"
+import { categories, dateRangeValues, types } from "./consts"
+
+
+export const profileSchema = z.object({
+    name: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters long" }),
+})
+
+export const settingsSchema = z.object({
+    name: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters long" }), // Custom message here
+    defaultView: z.enum(dateRangeValues)
+})
 
 export const transactionSchema = z.object({
     type: z.enum(types),
