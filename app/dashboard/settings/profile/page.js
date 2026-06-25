@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/libs/supabase/server";
 import Avatar from "@/components/avatar";
-import ProfileForm from "../components/form-profile";
-import { variants, sizes } from "@/libs/veriant";
+import { Mail, CalendarDays, Camera, User } from "lucide-react";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -23,35 +22,56 @@ export default async function ProfilePage() {
     <>
       <h1 className="text-4xl font-semibold mb-8">Profile</h1>
 
-      <section className="mb-8 flex items-center gap-4">
-        <Avatar width={64} height={64} />
-        <div>
-          <p className="font-medium">{metadata.name ?? "No name set"}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
-          <Link
-            href="/dashboard/settings/avatar"
-            className={`mt-2 inline-flex ${variants.outline} ${sizes.sm}`}
-          >
-            Change avatar
-          </Link>
-        </div>
-      </section>
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+          <div className="relative shrink-0">
+            <Avatar width={96} height={96} />
+            <Link
+              href="/dashboard/settings/avatar"
+              className="absolute -bottom-1 -right-1 rounded-full bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
+              aria-label="Change avatar"
+            >
+              <Camera className="w-4 h-4" />
+            </Link>
+          </div>
 
-      <section className="mb-8 space-y-2 text-sm">
-        <div className="flex justify-between max-w-md">
-          <span className="text-gray-500 dark:text-gray-400">Email</span>
-          <span>{user?.email ?? "—"}</span>
+          <div className="grow min-w-0 text-center sm:text-left">
+            <p className="text-2xl font-semibold">{metadata.name ?? "No name set"}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{user?.email}</p>
+          </div>
         </div>
-        <div className="flex justify-between max-w-md">
-          <span className="text-gray-500 dark:text-gray-400">Member since</span>
-          <span>{memberSince}</span>
-        </div>
-      </section>
+      </div>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Edit profile</h2>
-        <ProfileForm defaults={metadata} />
-      </section>
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Account
+          </h2>
+        </div>
+        <dl className="divide-y divide-gray-200 dark:divide-gray-800">
+          <div className="flex items-center gap-4 px-6 py-4">
+            <User className="w-5 h-5 shrink-0 text-gray-400" />
+            <div className="grow min-w-0">
+              <dt className="text-sm text-gray-500 dark:text-gray-400">Display name</dt>
+              <dd className="font-medium">{metadata.name ?? "—"}</dd>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 px-6 py-4">
+            <Mail className="w-5 h-5 shrink-0 text-gray-400" />
+            <div className="grow min-w-0">
+              <dt className="text-sm text-gray-500 dark:text-gray-400">Email address</dt>
+              <dd className="font-medium truncate">{user?.email ?? "—"}</dd>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 px-6 py-4">
+            <CalendarDays className="w-5 h-5 shrink-0 text-gray-400" />
+            <div className="grow min-w-0">
+              <dt className="text-sm text-gray-500 dark:text-gray-400">Member since</dt>
+              <dd className="font-medium">{memberSince}</dd>
+            </div>
+          </div>
+        </dl>
+      </div>
     </>
   );
 }

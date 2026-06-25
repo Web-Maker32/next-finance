@@ -22,7 +22,7 @@ export default function SideNav() {
                flex items-center space-x-2 text-sm rounded-md
                 hover:bg-gray-100 dark:hover:bg-gray-800 ${pathname === '/dashboard/settings/avatar' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
                 <Camera className='w-4 h-4' />
-                <span>avatar</span>
+                <span>Avatar</span>
             </Link>
         </li>
 

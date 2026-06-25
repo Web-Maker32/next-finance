@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
-import { profileSchema, settingsSchema, transactionSchema } from "./validation";
+import { settingsSchema, transactionSchema } from "./validation";
 import { redirect } from "next/navigation";
 
 export async function createTranscation(formData) {
@@ -158,38 +158,6 @@ export async function uploadAvatar(prevState, formData) {
      message: 'updated the user avatar'
    }
 
-}
-
-export async function updateProfile(prevState, formData) {
-  const validated = profileSchema.safeParse({
-    name: formData.get("name"),
-  });
-
-  if (!validated.success) {
-    return {
-      errors: validated.error.flatten().fieldErrors,
-    };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({
-    data: {
-      name: validated.data.name,
-    },
-  });
-
-  if (error) {
-    return {
-      error: true,
-      message: "Failed to update profile",
-      errors: {},
-    };
-  }
-
-  return {
-    message: "Updated profile",
-    errors: {},
-  };
 }
 
 export async function updateSettings(prevState, formData) {

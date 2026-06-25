@@ -4,7 +4,6 @@ import SettingsForm from "./components/form-settings";
 export default async function Page() {
     const supabase = await createClient()
     const {data: {user: { user_metadata: defaults = {}}}} = await supabase.auth.getUser()
-    console.log(defaults) 
     return (
         <>
         
