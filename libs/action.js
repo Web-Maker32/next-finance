@@ -66,28 +66,27 @@ export async function deleteTransaction(id) {
 } 
 
 export async function login(prevState, formData) {
-const supabase = await createClient()
-const email = formData.get("email")
-const {error} = supabase.auth.signInWithOtp({
-  email,
-  options: {
-    shouldCreateUser: true
+  const supabase = await createClient()
+  const email = formData.get("email")
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+    },
+  })
+
+  if (error) {
+    return {
+      error: true,
+      message: error.message || 'Error while authenticating',
+    }
   }
-})
- 
 
-if (error) {
-   return { 
-    error: true,
-    message: 'Error while authanticating',
+  return {
+    message: `Email sent to ${email}`,
   }
 }
 
-return {
-  message: `Email sent to ${email}`,
-}
-
-}
 
 export async function signOut() {
    const supabase = await createClient()
