@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server'
 import { createClient } from './server'
 
@@ -47,7 +46,8 @@ export async function updateSession(request) {
   )
 
   // 2. This triggers the cookie refresh logic above if the session is expired
-  await supabase.auth.getUser()
+  const { data } = await supabase.auth.getUser()
+  const user = data?.user
 
   return response
 }

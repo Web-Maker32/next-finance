@@ -5,11 +5,14 @@ import { Mail, CalendarDays, Camera, User } from "lucide-react";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
+  const user = data?.user
 
-  const metadata = user?.user_metadata ?? {};
+  if (!user) {
+    redirect("/login")
+  }
+
+  const metadata = user.user_metadata ?? {};
   const memberSince = user?.created_at
     ? new Date(user.created_at).toLocaleDateString(undefined, {
         year: "numeric",

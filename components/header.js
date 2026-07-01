@@ -11,8 +11,8 @@ export default async function Header({className}) {
   
   const theme = getServerTheme()
   const supabase = await createClient()
-  const {data:{user}, error} = await supabase.auth.getUser()
-  
+  const { data, error } = await supabase.auth.getUser()
+  const user = data?.user
   
   return (
     <header className={`flex justify-between items-center ${className}`}>
