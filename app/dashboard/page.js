@@ -10,14 +10,20 @@ import { types } from "@/libs/consts";
 import Range from "./components/range";
 import TransactionListWarper from "./components/transaction-list-warper";
 import { createClient } from "@/libs/supabase/server";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function page({ searchParams }) {
   const supabase = await createClient();
-  const { data: { user: { user_metadata: settings } } } = await supabase.auth.getUser();
-  const params = await searchParams;
-  const range = params?.range ?? settings?.defaultView ?? "last30days";
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data?.user) {
+    redirect("/login");
+  }
+
+  const settings = data.user.user_metadata;
+  const range = searchParams?.range ?? settings?.defaultView ?? "last30days";
   return (
     <div className="space-y-8">
       <section className="flex justify-between items-center">
