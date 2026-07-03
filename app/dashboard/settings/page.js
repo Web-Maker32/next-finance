@@ -14,7 +14,7 @@ export default async function Page() {
     const { user_metadata: defaults = {} } = user
     return (
         <>
-            <h1 className="text-4xl font-semibold mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold mb-8">
                 Settings
             </h1>
             <SettingsForm defaults={defaults}/>

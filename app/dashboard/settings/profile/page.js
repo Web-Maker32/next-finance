@@ -23,7 +23,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <h1 className="text-4xl font-semibold mb-8">Profile</h1>
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold mb-8">Profile</h1>
 
       <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6 mb-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">

@@ -20,7 +20,7 @@ export default async function page({params}) {
 
     return (
         <>
-          <h1 className="text-4xl font-semibold mb-8">Edit Transaction</h1>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold mb-8">Edit Transaction</h1>
           <TransactionForm initialData={transaction}/>
         </>
       );

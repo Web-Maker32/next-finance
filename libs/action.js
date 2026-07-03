@@ -190,7 +190,8 @@ export async function uploadAvatar(prevState, formData) {
 export async function updateSettings(prevState, formData) {
   const validated = settingsSchema.safeParse({
     name: formData.get('name'),
-    defaultView: formData.get('defaultView')
+    defaultView: formData.get('defaultView'),
+    currency: formData.get('currency')
   })
 
  if (!validated.success) {
@@ -205,7 +206,8 @@ export async function updateSettings(prevState, formData) {
     .updateUser({
       data: {
         name: validated.data.name,
-        defaultView: validated.data.defaultView
+        defaultView: validated.data.defaultView,
+        currency: validated.data.currency
       }
     })
     

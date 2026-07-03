@@ -27,7 +27,7 @@ export default async function page({ searchParams }) {
   return (
     <div className="space-y-8">
       <section className="flex justify-between items-center">
-        <h1 className="text-4xl font-semibold">Summary</h1>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold">Summary</h1>
         <aside>
           <Range defaultView={settings?.defaultView} />
         </aside>

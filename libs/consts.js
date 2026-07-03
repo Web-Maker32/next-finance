@@ -7,3 +7,7 @@ export const categories = [
 export const dateRangeValues = [
   "last24hours","last7days","last30days","last12months"
 ]
+
+export const currencies = [
+  'USD', 'EUR', 'GBP', 'PKR'
+]

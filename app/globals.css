@@ -34,3 +34,12 @@ body {
 body {
   font-family: var(--font-geist-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial);
 }
+
+/* Prevent awkward word breaks and enable hyphenation where supported */
+h1, h2, h3, p {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}

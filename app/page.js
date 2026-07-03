@@ -12,16 +12,16 @@ export default function page() {
         <section className="space-y-8 space-x-4 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
           <Header />
           <p className="text-xl text-sky-600 dark:text-sky-400">Finance made simple</p>
-          <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
             Track your money with confidence
           </h1>
-          <p className="max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+          <p className="max-w-2xl text-lg leading-7 text-slate-600 dark:text-slate-300">
             Next Finance helps you manage transactions, track spending, and reach your financial goals with one polished dashboard.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
               href="/login"
-              className="inline-flex w-full items-center justify-center rounded-md bg-black px-6 py-3 text-base font-semibold text-white transition hover:bg-gray-700 dark:bg-white dark:text-black dark:hover:bg-gray-200 sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-md bg-black px-6 py-3 text-base font-semibold text-white shadow-sm hover:shadow-md transform transition duration-150 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-white dark:text-black dark:hover:bg-gray-200 sm:w-auto"
             >
               Get started
             </Link>

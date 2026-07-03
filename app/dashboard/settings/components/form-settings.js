@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import AlertError from "@/components/alert-error";
 import AlertSuccess from "@/components/alert-success";
 import DateRangeSelect from "@/components/date-range-select";
@@ -10,6 +9,9 @@ import SubmitButton from "@/components/submit-button";
 import { updateSettings } from "@/libs/action";
 import { useActionState } from "react";
 import { FormError } from "@/components/form-error";
+import Select from "@/components/select";
+import { currencies } from '@/libs/consts'
+import { useEffect, useState } from 'react';
 
 const initialState = {
   message: "",
@@ -20,6 +22,13 @@ const initialState = {
 export default function SettingsForm({ defaults }) {
   const [state, formAction] = useActionState(updateSettings, initialState);
   const [name, setName] = useState(defaults?.name || "");
+  const [currency, setCurrency] = useState(defaults?.currency || localStorage?.getItem('currency') || 'EUR');
+
+  useEffect(() => {
+    if (!state?.error && state?.message) {
+      try { localStorage.setItem('currency', currency) } catch (e) {}
+    }
+  }, [state?.message])
 
   return (
     <form className="space-y-4" action={formAction}>
@@ -41,6 +50,22 @@ export default function SettingsForm({ defaults }) {
         {state?.errors?.name?.map((error) => (
           <FormError key={`name-${error}`} error={error} />
         ))}
+      </div>
+
+      <div>
+        <Label htmlFor="currency">Currency</Label>
+        <Select
+          name="currency"
+          id="currency"
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+        >
+          {currencies.map(c => <option key={c} value={c}>{c}</option>)}
+        </Select>
+        {state?.errors?.currency?.map((error) => (
+          <FormError key={`currency-${error}`} error={error} />
+        ))}
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Select the currency used across the app.</p>
       </div>
 
       <div>

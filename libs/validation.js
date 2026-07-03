@@ -1,12 +1,13 @@
 import { z } from "zod"
-import { categories, dateRangeValues, types } from "./consts"
+import { categories, dateRangeValues, types, currencies } from "./consts"
 
 
 export const settingsSchema = z.object({
     name: z
     .string()
     .min(2, { message: "Username must be at least 2 characters long" }),
-    defaultView: z.enum(dateRangeValues)
+    defaultView: z.enum(dateRangeValues),
+    currency: z.enum(currencies).optional()
 })
 
 export const transactionSchema = z.object({
