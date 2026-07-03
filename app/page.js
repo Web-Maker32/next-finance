@@ -8,8 +8,8 @@ export const metadata = {
 export default function page() {
   return (
     <div className=" min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <main className=" mx-auto max-w-5xl px-6 py-12 sm:px-8">
-        <section className="space-y-8 space-x-4 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
+      <main className=" mx-auto max-w-6xl px-6 py-12 sm:px-8">
+        <section className="space-y-8 space-x-4 rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
           <Header />
           <p className="text-xl text-sky-600 dark:text-sky-400">Finance made simple</p>
           <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
@@ -27,13 +27,13 @@ export default function page() {
             </Link>
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-950">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-md dark:shadow-slate-950/20 dark:border-slate-800 dark:bg-slate-950">
               <h2 className="text-xl font-semibold">Quick insights</h2>
               <p className="mt-3 text-slate-600 dark:text-slate-300">
                 View recent transactions, spending categories, and balance activity at a glance.
               </p>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-950">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-md dark:shadow-slate-950/20 dark:border-slate-800 dark:bg-slate-950">
               <h2 className="text-xl font-semibold">Secure access</h2>
               <p className="mt-3 text-slate-600 dark:text-slate-300">
                 Sign in securely and keep your data private with built-in authentication.

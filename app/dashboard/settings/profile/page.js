@@ -25,7 +25,7 @@ export default async function ProfilePage() {
     <>
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold mb-8">Profile</h1>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6 mb-6">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6 mb-6 shadow-sm dark:shadow-slate-950/10">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="relative shrink-0">
             <Avatar width={96} height={96} />
@@ -45,7 +45,7 @@ export default async function ProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm dark:shadow-slate-950/10">
         <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
             Account
