@@ -9,7 +9,7 @@ export default function page() {
     <div className="mt-8 min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <Header />
       <main className="mx-auto max-w-5xl px-6 py-12 sm:px-8">
-        <section className="space-y-8 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
+        <section className="space-y-8 space-x-4 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
           <p className="text-xl text-sky-600 dark:text-sky-400">Finance made simple</p>
           <h1 className="mt-4 font-semibold md:text-5xl ">Track your money with{"\u00A0"}confidence</h1>
           <p className="max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
