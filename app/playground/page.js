@@ -19,6 +19,9 @@ export default function Page() {
   return (
     <main className="space-y-8 mb-44">
       <h1 className="text-4xl mt-8">Playground</h1>
+      <p className="max-w-3xl text-sm text-slate-500 dark:text-slate-400">
+        Developer preview only — this page is for testing and browsing UI components, not for end users.
+      </p>
 
       <div>
         <h2 className="mb-4 text-lg font-mono">Header</h2>

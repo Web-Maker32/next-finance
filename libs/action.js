@@ -68,6 +68,34 @@ export async function deleteTransaction(id) {
 export async function login(prevState, formData) {
   const supabase = await createClient()
   const email = formData.get("email")
+  const flow = formData.get("flow")
+  const password = formData.get("password")
+
+  if (flow === "password") {
+    if (!password) {
+      return {
+        error: true,
+        message: "Please enter your password to sign in.",
+      }
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      return {
+        error: true,
+        message: error.message || "Invalid email or password.",
+      }
+    }
+
+    return {
+      message: `Signed in as ${email}`,
+    }
+  }
+
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
