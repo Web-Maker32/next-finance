@@ -29,3 +29,8 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
+
+/* Use the Geist font provided by next/font when available, fall back to system sans */
+body {
+  font-family: var(--font-geist-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial);
+}

@@ -26,13 +26,13 @@ export default async function RootLayout({ children }) {
   const theme = await getServerTheme()
   return (
     <html
-      lang="en" 
-      className={theme === 'dark' ? 'dark' : 'light'}
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${theme === 'dark' ? 'dark' : 'light'}`}
     >
       <LayoutBody>
         {children}
       </LayoutBody>
-     
+
     </html>
   );
 }
