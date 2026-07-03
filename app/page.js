@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className="mt-8 min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className=" min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <main className="mx-auto max-w-5xl px-6 py-12 sm:px-8">
-        <section className="space-y-8 space-x-2 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
+        <section className="space-y-8 space-x-3 rounded-3xl border border-slate-200 bg-white/90 p-10 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
           <Header className="mb-8" />
           <p className="text-xl text-sky-600 dark:text-sky-400">Finance made simple</p>
           <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
