@@ -28,10 +28,10 @@ export default async function Header({className}) {
      {!user && (
        <Link
          href="/login"
-         className={`${variants['ghost']} ${sizes['base']} flex items-center`}
+         className={`${variants['ghost']} ${sizes['sm']} flex items-center`}
          aria-label="Sign in"
        >
-         <LogIn className="w-4 h-4 mr-2" />
+         <LogIn className="w-5 h-5 mr-2" />
          <span className="hidden sm:inline">Login</span>
        </Link>
      )}  
