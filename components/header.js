@@ -32,7 +32,6 @@ export default async function Header({className}) {
          aria-label="Sign in"
        >
          <LogIn className="w-4 h-4 mr-2" />
-         <span className="inline">Login</span>
        </Link>
      )}  
     </div>
