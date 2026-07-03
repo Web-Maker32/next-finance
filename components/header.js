@@ -25,7 +25,16 @@ export default async function Header({className}) {
       <span>{user?.user_metadata?.name ?? user?.email}</span>
      </Link>}  
      {user && <SignOutButton />}
-     {!user && <Link href="/login" className={`${variants['ghost']} ${sizes['sm']}`}><LogIn/></Link>}  
+     {!user && (
+       <Link
+         href="/login"
+         className={`${variants['ghost']} ${sizes['sm']} flex items-center`}
+         aria-label="Sign in"
+       >
+         <LogIn className="w-4 h-4 mr-2" />
+         <span className="hidden sm:inline">Login</span>
+       </Link>
+     )}  
     </div>
     
     
