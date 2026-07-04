@@ -99,37 +99,29 @@ export async function login(prevState, formData) {
       }
     }
 
-    const isNoUser = /user|login/i.test(error.message)
-    if (isNoUser) {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email: normalizedEmail,
-        password,
-      })
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: normalizedEmail,
+      password,
+    })
 
-      if (!signUpError && data?.session) {
-        return {
-          success: true,
-          target: '/dashboard',
-          message: `Signed up and signed in as ${normalizedEmail}`,
-        }
-      }
-
-      if (!signUpError) {
-        return {
-          error: false,
-          message: `A confirmation email was sent to ${normalizedEmail}.`,
-        }
-      }
-
+    if (!signUpError && data?.session) {
       return {
-        error: true,
-        message: signUpError.message || "Invalid email or password.",
+        success: true,
+        target: '/dashboard',
+        message: `Signed up and signed in as ${normalizedEmail}`,
+      }
+    }
+
+    if (!signUpError && data?.user) {
+      return {
+        error: false,
+        message: `A confirmation email was sent to ${normalizedEmail}.`,
       }
     }
 
     return {
       error: true,
-      message: error.message || "Invalid email or password.",
+      message: signUpError?.message || error.message || "Invalid email or password.",
     }
   }
 
