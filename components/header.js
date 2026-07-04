@@ -31,7 +31,7 @@ export default async function Header({className}) {
          className={`${variants['ghost']} ${sizes['sm']} flex items-center`}
          aria-label="Sign in"
        >
-         <LogIn className="w-4 h-4 mr-2" />
+         <LogIn className="w-6 h-6" />
        </Link>
      )}  
     </div>
