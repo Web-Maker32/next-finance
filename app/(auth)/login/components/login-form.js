@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Eye, EyeOff } from 'lucide-react'
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 import { login } from "@/libs/action";
@@ -36,15 +37,15 @@ export default function LoginForm() {
             type={showPassword ? 'text' : 'password'}
             placeholder='Your password'
             name='password'
-            className="pr-20"
+            className="pl-12"
           />
           <button
             type="button"
             onClick={() => setShowPassword((current) => !current)}
-            className="absolute inset-y-0 right-0 flex items-center px-3 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+            className="absolute inset-y-0 left-0 flex items-center justify-center px-3 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
-            {showPassword ? 'Hide' : 'Show'}
+            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
       </div>
