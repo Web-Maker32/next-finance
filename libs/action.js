@@ -116,7 +116,7 @@ export async function login(prevState, formData) {
 
       if (!signUpError) {
         return {
-          error: true,
+          error: false,
           message: `A confirmation email was sent to ${normalizedEmail}.`,
         }
       }
