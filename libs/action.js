@@ -99,6 +99,14 @@ export async function login(prevState, formData) {
       }
     }
 
+    const isMissingUser = /user not found|no user/i.test(error.message)
+    if (!isMissingUser) {
+      return {
+        error: true,
+        message: error.message || "Invalid email or password.",
+      }
+    }
+
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
