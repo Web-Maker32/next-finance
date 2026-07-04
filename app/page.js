@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className=" min-h-screen w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className=" min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <main className=" mx-auto max-w-6xl px-6 py-12 sm:px-8">
         <section className="space-y-8 space-x-4 rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-slate-950/30">
           <Header />
@@ -15,7 +15,7 @@ export default function page() {
           <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
             Track your money with confidence
           </h1>
-          <p className="max-w-2xl text-lg leading-7 text-slate-600 dark:text-slate-300">
+          <p className="max-w-2xl space-x-2 text-lg leading-7 text-slate-600 dark:text-slate-300">
             Next Finance helps you manage transactions, track spending, and reach your financial goals with one polished dashboard.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
