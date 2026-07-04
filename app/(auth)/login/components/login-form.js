@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 import { login } from "@/libs/action";
@@ -11,7 +13,16 @@ const initialState = {
 }
 
 export default function LoginForm() {
+  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false)
   const [state, formAction] = useActionState(login, initialState)
+
+  useEffect(() => {
+    if (state?.success && state?.target) {
+      router.push(state.target)
+    }
+  }, [state, router])
+
   return (
     <form action={formAction} className="space-y-4">
       <div className="space-y-2">
@@ -20,7 +31,22 @@ export default function LoginForm() {
       </div>
       <div className="space-y-2">
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password (optional)</label>
-        <Input type='password' placeholder='Your password' name='password' />
+        <div className="relative">
+          <Input
+            type={showPassword ? 'text' : 'password'}
+            placeholder='Your password'
+            name='password'
+            className="pr-20"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((current) => !current)}
+            className="absolute inset-y-0 right-0 flex items-center px-3 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <SubmitButton type='submit' name='flow' value='otp' size="sm" className="w-full">

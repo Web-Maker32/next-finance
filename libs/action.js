@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { settingsSchema, transactionSchema } from "./validation";
-import { redirect } from "next/navigation";
 
 export async function createTranscation(formData) {
   const validated = transactionSchema.safeParse(formData);
@@ -71,6 +70,13 @@ export async function login(prevState, formData) {
   const flow = formData.get("flow")
   const password = formData.get("password")
 
+  if (!email) {
+    return {
+      error: true,
+      message: "Please enter your email address.",
+    }
+  }
+
   if (flow === "password") {
     if (!password) {
       return {
@@ -92,6 +98,8 @@ export async function login(prevState, formData) {
     }
 
     return {
+      success: true,
+      target: '/dashboard',
       message: `Signed in as ${email}`,
     }
   }
