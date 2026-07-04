@@ -66,9 +66,9 @@ export async function deleteTransaction(id) {
 
 export async function login(prevState, formData) {
   const supabase = await createClient()
-  const email = formData.get("email")
-  const flow = formData.get("flow")
-  const password = formData.get("password")
+  const email = formData.get("email")?.toString().trim()
+  const flow = formData.get("flow")?.toString()
+  const password = formData.get("password")?.toString().trim()
 
   if (!email) {
     return {
@@ -85,22 +85,51 @@ export async function login(prevState, formData) {
       }
     }
 
+    const normalizedEmail = email.toLowerCase()
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password,
     })
 
-    if (error) {
+    if (!error) {
+      return {
+        success: true,
+        target: '/dashboard',
+        message: `Signed in as ${normalizedEmail}`,
+      }
+    }
+
+    const isNoUser = /user|login/i.test(error.message)
+    if (isNoUser) {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: normalizedEmail,
+        password,
+      })
+
+      if (!signUpError && data?.session) {
+        return {
+          success: true,
+          target: '/dashboard',
+          message: `Signed up and signed in as ${normalizedEmail}`,
+        }
+      }
+
+      if (!signUpError) {
+        return {
+          error: true,
+          message: `A confirmation email was sent to ${normalizedEmail}.`,
+        }
+      }
+
       return {
         error: true,
-        message: error.message || "Invalid email or password.",
+        message: signUpError.message || "Invalid email or password.",
       }
     }
 
     return {
-      success: true,
-      target: '/dashboard',
-      message: `Signed in as ${email}`,
+      error: true,
+      message: error.message || "Invalid email or password.",
     }
   }
 
