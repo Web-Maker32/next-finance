@@ -99,14 +99,6 @@ export async function login(prevState, formData) {
       }
     }
 
-    const isMissingUser = /user not found|no user/i.test(error.message)
-    if (!isMissingUser) {
-      return {
-        error: true,
-        message: error.message || "Invalid email or password.",
-      }
-    }
-
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
@@ -127,9 +119,13 @@ export async function login(prevState, formData) {
       }
     }
 
+    const signUpAlreadyRegistered = /already registered|duplicate|user already registered/i.test(signUpError?.message || '')
+
     return {
       error: true,
-      message: signUpError?.message || error.message || "Invalid email or password.",
+      message: signUpAlreadyRegistered
+        ? error.message || "Invalid email or password."
+        : signUpError?.message || error.message || "Invalid email or password.",
     }
   }
 
