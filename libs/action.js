@@ -99,6 +99,27 @@ export async function login(prevState, formData) {
       }
     }
 
+    if (/email not confirmed/i.test(error.message || '')) {
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        email: normalizedEmail,
+        options: {
+          shouldCreateUser: false,
+        },
+      })
+
+      if (otpError) {
+        return {
+          error: true,
+          message: otpError.message || "Unable to resend confirmation email.",
+        }
+      }
+
+      return {
+        error: false,
+        message: `A confirmation email was sent to ${normalizedEmail}.`,
+      }
+    }
+
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
