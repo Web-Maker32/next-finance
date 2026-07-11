@@ -19,7 +19,7 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="mt-8 border-t border-slate-200/80 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-slate-800 dark:bg-slate-950/80">
+    <footer className="mt-8 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-slate-950/80">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-8 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-md space-y-3">
           <Link
@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-slate-200/70 px-4 py-4 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-500">
+      <div className="px-4 py-4 text-center text-sm text-slate-500 dark:text-slate-500">
         © {new Date().getFullYear()} Next Finance. Built for clearer money habits.
       </div>
     </footer>
