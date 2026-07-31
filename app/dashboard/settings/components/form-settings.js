@@ -25,10 +25,10 @@ export default function SettingsForm({ defaults }) {
   const [currency, setCurrency] = useState(defaults?.currency || localStorage?.getItem('currency') || 'EUR');
 
   useEffect(() => {
-    if (!state?.error && state?.message) {
-      try { localStorage.setItem('currency', currency) } catch (e) {}
-    }
-  }, [state?.message])
+    try {
+      localStorage.setItem('currency', currency)
+    } catch (e) {}
+  }, [currency])
 
   return (
     <form className="space-y-4" action={formAction}>
