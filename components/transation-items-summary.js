@@ -1,8 +1,21 @@
-import { useFormatCurrency } from "@/hooks/use-format-currency"
+"use client";
+
+import { useEffect, useState } from "react"
+import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency"
 
 export default function TransactionItemsSummary({date,amount}) {
-    
-    const formattedAmount = useFormatCurrency(amount)
+    const [currency, setCurrency] = useState('EUR')
+
+    useEffect(() => {
+        const syncCurrency = () => setCurrency(getStoredCurrency())
+
+        syncCurrency()
+        window.addEventListener('currency-updated', syncCurrency)
+
+        return () => window.removeEventListener('currency-updated', syncCurrency)
+    }, [])
+
+    const formattedAmount = formatCurrency(amount, currency)
     
     return (
         <div className="flex text-gray-500 dark:text-gray-400 font-semibold">

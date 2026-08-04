@@ -1,8 +1,11 @@
-import { useFormatCurrency } from "@/hooks/use-format-currency"
+"use client";
+
+import { useEffect, useState } from "react"
 import { HandCoins, Wallet, Vault, Landmark, Pencil } from "lucide-react"
 import TransactionItemRemoveButton from "./transaction-item-remove-button"
 import Link from "next/link"
 import { sizes, variants } from "@/libs/veriant"
+import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency"
 
 export default function TransactionItem({ onRemoved, id,type,category,amount,description}) {
    
@@ -28,7 +31,18 @@ export default function TransactionItem({ onRemoved, id,type,category,amount,des
   const IconComponent = typesMap[type].icon
   const colors = typesMap[type].colors
 
-    const formattedAmount = useFormatCurrency(amount)
+    const [currency, setCurrency] = useState('EUR')
+
+    useEffect(() => {
+      const syncCurrency = () => setCurrency(getStoredCurrency())
+
+      syncCurrency()
+      window.addEventListener('currency-updated', syncCurrency)
+
+      return () => window.removeEventListener('currency-updated', syncCurrency)
+    }, [])
+
+    const formattedAmount = formatCurrency(amount, currency)
 
     return (<div className="w-full flex items-center">
 

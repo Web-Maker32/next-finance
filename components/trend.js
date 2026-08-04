@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react"
+import { useMemo, useEffect, useState } from "react"
 import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
-import { useFormatCurrency } from "@/hooks/use-format-currency"
+import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency"
 
 export default function Trend({
   type, amount, prevAmount
@@ -24,7 +24,18 @@ export default function Trend({
     [amount, prevAmount]
   )
 
-  const formattedAmount = useFormatCurrency(amount ?? 0)
+  const [currency, setCurrency] = useState('EUR')
+
+  useEffect(() => {
+    const syncCurrency = () => setCurrency(getStoredCurrency())
+
+    syncCurrency()
+    window.addEventListener('currency-updated', syncCurrency)
+
+    return () => window.removeEventListener('currency-updated', syncCurrency)
+  }, [])
+
+  const formattedAmount = formatCurrency(amount ?? 0, currency)
 
   return <div>
     <div className={`font-semibold ${colorClasses[type]}`}>{type}</div>
