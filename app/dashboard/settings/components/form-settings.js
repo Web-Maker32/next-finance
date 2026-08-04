@@ -12,6 +12,7 @@ import { FormError } from "@/components/form-error";
 import Select from "@/components/select";
 import { currencies } from '@/libs/consts'
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
   message: "",
@@ -20,15 +21,26 @@ const initialState = {
 };
 
 export default function SettingsForm({ defaults }) {
+  const router = useRouter();
   const [state, formAction] = useActionState(updateSettings, initialState);
   const [name, setName] = useState(defaults?.name || "");
-  const [currency, setCurrency] = useState(defaults?.currency || localStorage?.getItem('currency') || 'EUR');
+  const [currency, setCurrency] = useState(defaults?.currency || 'EUR');
+  const [defaultView, setDefaultView] = useState(defaults?.defaultView || 'last30days');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     try {
-      localStorage.setItem('currency', currency)
+      localStorage.setItem('currency', currency);
+      window.dispatchEvent(new CustomEvent('currency-updated', { detail: currency }));
     } catch (e) {}
-  }, [currency])
+  }, [currency]);
+
+  useEffect(() => {
+    if (state?.message && !state?.error) {
+      router.refresh();
+    }
+  }, [router, state?.error, state?.message]);
 
   return (
     <form className="space-y-4" action={formAction}>
@@ -73,7 +85,8 @@ export default function SettingsForm({ defaults }) {
         <DateRangeSelect
           name="defaultView"
           id="defaultView"
-          defaultValue={defaults?.defaultView}
+          value={defaultView}
+          onChange={(e) => setDefaultView(e.target.value)}
         />
         {state?.errors?.defaultView?.map((error) => (
           <FormError key={`defaultView-${error}`} error={error} />
