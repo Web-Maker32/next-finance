@@ -26,6 +26,7 @@ export default function SettingsForm({ defaults }) {
   const [name, setName] = useState(defaults?.name || "");
   const [currency, setCurrency] = useState(defaults?.currency || 'EUR');
   const [defaultView, setDefaultView] = useState(defaults?.defaultView || 'last30days');
+  const formKey = `${defaults?.name || ""}-${defaults?.currency || 'EUR'}-${defaults?.defaultView || 'last30days'}`;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -43,7 +44,7 @@ export default function SettingsForm({ defaults }) {
   }, [router, state?.error, state?.message]);
 
   return (
-    <form className="space-y-4" action={formAction}>
+    <form key={formKey} className="space-y-4" action={formAction}>
       {state?.error && <AlertError>{state?.message}</AlertError>}
       {!state?.error && state?.message?.length > 0 && (
         <AlertSuccess>{state?.message}</AlertSuccess>
