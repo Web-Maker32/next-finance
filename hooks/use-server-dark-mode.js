@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-export default async function getServerTheme(defaultTheme = 'light') {
+export default async function getServerTheme(defaultTheme = 'dark') {
   const cookieStore = await cookies()
   const themeCookie = cookieStore.get('theme')
   return themeCookie?.value ?? defaultTheme

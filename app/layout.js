@@ -23,7 +23,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const theme = await getServerTheme()
+  const theme = await getServerTheme('dark')
   return (
     <html
       lang="en"
