@@ -1,39 +1,42 @@
-import { useState, useCallback } from 'react'
+"use client";
 
-const useDarkMode = (defaultTheme = 'dark') => {
-  // Read actual DOM state to sync with server-rendered class
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === 'undefined') return defaultTheme
-    // Check if html has dark class (set by server)
-    const hasDarkClass = document.documentElement.classList.contains('dark')
-    return hasDarkClass ? 'dark' : 'light'
-  })
+import { useState, useCallback, useEffect } from "react";
+
+const useDarkMode = (defaultTheme = "dark") => {
+  const [theme, setTheme] = useState(defaultTheme);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    const hasDarkClass = document.documentElement.classList.contains("dark");
+    const current = saved || (hasDarkClass ? "dark" : defaultTheme);
+
+    applyTheme(current);
+    setTheme(current);
+  }, [defaultTheme]);
+
+  const applyTheme = (newTheme) => {
+    const root = document.documentElement;
+
+    if (newTheme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    localStorage.setItem("theme", newTheme);
+    document.cookie = `theme=${newTheme}; path=/; max-age=31536000; SameSite=Lax`;
+  };
 
   const setAndSaveTheme = useCallback((newTheme) => {
-    console.log('Toggling to:', newTheme)
-    console.log('Before - html classes:', document.documentElement.className)
-    
-    // Apply to DOM immediately (no delay)
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-        
-    // Update state
-    setTheme(newTheme)
-    
-    // Save to localStorage and cookie
-    localStorage.setItem('theme', newTheme)
-    document.cookie = `theme=${newTheme}; path=/; max-age=31536000`
-  }, [])
+    applyTheme(newTheme);
+    setTheme(newTheme);
+  }, []);
 
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark'
-    setAndSaveTheme(newTheme)
-  }, [theme, setAndSaveTheme])
+    setAndSaveTheme(theme === "dark" ? "light" : "dark");
+  }, [theme, setAndSaveTheme]);
 
-  return { theme, toggleTheme }
-}
+  return { theme, toggleTheme };
+};
 
-export default useDarkMode
+export default useDarkMode;

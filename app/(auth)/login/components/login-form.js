@@ -1,68 +1,107 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Eye, EyeOff } from 'lucide-react'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 import { login } from "@/libs/action";
-import { useActionState } from 'react'
+import { useActionState } from "react";
 
 const initialState = {
   message: "",
-  error: false
-}
+  error: false,
+};
 
 export default function LoginForm() {
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
-  const [state, formAction] = useActionState(login, initialState)
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [state, formAction] = useActionState(login, initialState);
 
   useEffect(() => {
     if (state?.success && state?.target) {
-      router.push(state.target)
+      router.push(state.target);
     }
-  }, [state, router])
+  }, [state, router]);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <motion.form
+      action={formAction}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-5"
+    >
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
-        <Input type='email' placeholder='name@example.com' name='email' required />
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          Email
+        </label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="name@example.com"
+          name="email"
+          required
+          autoComplete="email"
+        />
       </div>
+
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password (optional)</label>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          Password <span className="text-slate-400">(optional)</span>
+        </label>
         <div className="relative">
           <Input
-            type={showPassword ? 'text' : 'password'}
-            placeholder='Your password'
-            name='password'
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Your password"
+            name="password"
             className="pr-12"
+            autoComplete="current-password"
           />
           <button
             type="button"
             onClick={() => setShowPassword((current) => !current)}
-            className="absolute right-0 top-2 h-10 flex items-center justify-center px-3 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            className="absolute right-2 flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/5 dark:hover:text-white"
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <SubmitButton type='submit' name='flow' value='otp' size="sm" className="w-full">
+
+      <div className="grid gap-3 pt-1 sm:grid-cols-2">
+        <SubmitButton type="submit" name="flow" value="otp" size="sm" className="w-full">
           Send magic link
         </SubmitButton>
-        <SubmitButton type='submit' name='flow' value='password' size="sm" className="w-full">
+        <SubmitButton type="submit" name="flow" value="password" size="sm" className="w-full">
           Sign in with password
         </SubmitButton>
       </div>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
-        Use the magic link for passwordless sign-in, or add your password to sign in directly.
+
+      <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        Use the magic link for passwordless sign-in, or add your password to
+        sign in directly.
       </p>
-      <p className={`${state?.error ? 'text-red-500' : 'text-green-500'} text-sm text-center`}>
-        {state?.message}
-      </p>
-    </form>
-  )
+
+      {state?.message ? (
+        <p
+          className={`rounded-xl px-3 py-2 text-center text-sm ${
+            state.error
+              ? "bg-red-500/10 text-red-500 dark:text-red-400"
+              : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+          }`}
+        >
+          {state.message}
+        </p>
+      ) : null}
+    </motion.form>
+  );
 }

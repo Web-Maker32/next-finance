@@ -1,26 +1,38 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import useDarkMode from '@/hooks/use-dark-mode'
-import Button from './button'
-import {Moon, Sun} from 'lucide-react'
+import { useState, useEffect } from "react";
+import useDarkMode from "@/hooks/use-dark-mode";
+import Button from "./button";
+import { Moon, Sun } from "lucide-react";
 
-export default function DarkModeToggle({defaultMode = 'dark'}) {
-  const {theme, toggleTheme} = useDarkMode(defaultMode)
-  const [mounted, setMounted] = useState(false)
-  
+export default function DarkModeToggle({ defaultMode = "dark" }) {
+  const { theme, toggleTheme } = useDarkMode(defaultMode);
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true)
-  }, [])
-  
-  // Prevent hydration mismatch by rendering placeholder until mounted
+    setMounted(true);
+  }, []);
+
   if (!mounted) {
-    return <Button variant="ghost" size="sm"><div className="w-4 h-4" /></Button>
+    return (
+      <Button variant="ghost" size="sm" aria-label="Toggle theme">
+        <div className="h-5 w-5" />
+      </Button>
+    );
   }
-  
-  return <Button variant="ghost" size="sm" onClick={toggleTheme}>
-    {theme === 'dark' && <Sun className="w-6 h-6" />}
-    {theme === 'light' && <Moon className="w-6 h-6" />}
-  </Button>
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={toggleTheme}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {theme === "dark" ? (
+        <Sun className="h-5 w-5" />
+      ) : (
+        <Moon className="h-5 w-5" />
+      )}
+    </Button>
+  );
 }

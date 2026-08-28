@@ -14,7 +14,7 @@
 }
 
 .dark {
-  --bg-primary: #020617;
+  --bg-primary: #05070f;
   --bg-input: #0f172a;
   --bg-input-border: #1e293b;
   --bg-checkbox: #0f172a;
@@ -24,18 +24,21 @@
   --border-checkbox: #334155;
 }
 
-body {
-  @apply container mx-auto max-w-6xl;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+html {
+  color-scheme: light;
 }
 
-/* Use the Geist font provided by next/font when available, fall back to system sans */
+html.dark {
+  color-scheme: dark;
+}
+
 body {
+  @apply mx-auto max-w-6xl;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-geist-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial);
 }
 
-/* Prevent awkward word breaks and enable hyphenation where supported */
 h1, h2, h3, p {
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -44,13 +47,10 @@ h1, h2, h3, p {
   hyphens: auto;
 }
 
-/* For modern browsers (Firefox) */
 * {
   scrollbar-color: #0061f3 transparent;
-  /* thumb color | track color */
 }
 
-/* For Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -61,11 +61,9 @@ h1, h2, h3, p {
 
 ::-webkit-scrollbar-thumb {
   background-color: #3b82f6;
-  /* Blue-500 */
   border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #2563eb;
-  /* Blue-600 */
 }

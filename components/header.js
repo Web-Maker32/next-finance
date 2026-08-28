@@ -7,36 +7,49 @@ import { sizes, variants } from "@/libs/veriant";
 import { SignOutButton } from "@/components/signout";
 import Avatar from "@/components/avatar";
 
-export default async function Header({className}) {
-  
-  const theme = getServerTheme()
-  const supabase = await createClient()
-  const { data, error } = await supabase.auth.getUser()
-  const user = data?.user
-  
+export default async function Header({ className = "" }) {
+  const theme = getServerTheme();
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  const user = data?.user;
+  const displayName = user?.user_metadata?.name ?? user?.email ?? "Account";
+
   return (
-    <header className={`flex justify-between items-center ${className}`}>
-      <Link href="/dashboard" className="text-xl hover:underline underline-offset-8 decoration-2">Next Finance</Link>
-    
-    <div className="flex items-center">
-     <DarkModeToggle />
-     {user && <Link href='dashboard/settings' className={`flex items-center space-x-1 ${variants['ghost']} ${sizes['sm']}`}>
-      <Avatar />
-      <span>{user?.user_metadata?.name ?? user?.email}</span>
-     </Link>}  
-     {user && <SignOutButton />}
-     {!user && (
-       <Link
-         href="/login"
-         className={`${variants['ghost']} ${sizes['sm']} flex items-center`}
-         aria-label="Sign in"
-       >
-         <LogIn className="w-6 h-6" />
-       </Link>
-     )}  
-    </div>
-    
-    
+    <header className={`flex items-center justify-between gap-4 ${className}`}>
+      <Link
+        href="/dashboard"
+        className="text-lg font-semibold tracking-tight text-slate-900 transition hover:text-sky-600 dark:text-white dark:hover:text-sky-400 sm:text-xl"
+      >
+        Next Finance
+      </Link>
+
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        <DarkModeToggle defaultMode={theme} />
+
+        {user ? (
+          <>
+            <Link
+              href="/dashboard/settings"
+              className={`${variants["ghost"]} ${sizes["sm"]} flex max-w-[180px] items-center gap-2 truncate sm:max-w-none`}
+            >
+              <Avatar />
+              <span className="hidden truncate text-sm sm:inline">
+                {displayName}
+              </span>
+            </Link>
+            <SignOutButton />
+          </>
+        ) : (
+          <Link
+            href="/login"
+            className={`${variants["ghost"]} ${sizes["sm"]} flex items-center gap-2`}
+            aria-label="Sign in"
+          >
+            <LogIn className="h-6 w-6" />
+            <span className="hidden sm:inline">Sign in</span>
+          </Link>
+        )}
+      </div>
     </header>
-  )
+  );
 }
