@@ -1,55 +1,19 @@
 import Skeleton from "@/components/skeleton";
 
 export default function TransactionListFallback() {
-  return <div className="space-y-8">
-    <div className="space-y-4">
-    <TransactionItemsSummarySkeleton /> 
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-  </div>
-
-  <div className="space-y-4">
-    <TransactionItemsSummarySkeleton /> 
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-    <TransactionItemSkeleton />
-  </div>
-  </div>;
-}
-
-
-
- function TransactionItemSkeleton() {
-  return <div className="w-full flex items-center space-x-4">
-
-      <div className="flex items-center grow">
-     <Skeleton/>
-      </div>
-
-      <div className="min-w-[150px] items-center hidden md:flex">
-        <Skeleton/>
-      </div>
-
-      <div className="min-w-[70px] text-right">
-        <Skeleton/>
-      </div>
-
-      <div className="min-w-[50px] flex justify-end"><Skeleton/></div>
-    </div>;
-}
-    function TransactionItemsSummarySkeleton() {
-       return <div className="flex space-x-4">
-           <div className="grow">
-           <Skeleton/>
-           </div>
-           <div className="min-w-[50px] text-right font-semibold">
-            <Skeleton/>
-           </div>
-           <div className="min-w-[50px]">
-           </div>
+  return (
+    <div className="space-y-8">
+      {[0, 1].map((group) => (
+        <div key={group} className="space-y-3">
+          <div className="flex justify-between">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+          <Skeleton className="h-12" />
+          <Skeleton className="h-12" />
+          <Skeleton className="h-12" />
         </div>
-    }
-    
+      ))}
+    </div>
+  );
+}

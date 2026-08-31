@@ -1,114 +1,124 @@
-'use client'
+"use client";
 
 import Input from "@/components/input";
 import Label from "@/components/label";
 import Select from "@/components/select";
+import Button from "@/components/button";
+import { FormError } from "@/components/form-error";
 import { categories, types } from "@/libs/consts";
-import Button  from "@/components/button";
+import { transactionSchema } from "@/libs/validation";
+import { createTranscation, updateTranscation } from "@/libs/action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transactionSchema } from "@/libs/validation";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTranscation , updateTranscation} from "@/libs/action";
-import { FormError } from "@/components/form-error";
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
-export default function TransactionForm({initialData}) {
+export default function TransactionForm({ initialData }) {
+  const reduce = useReducedMotion();
+  const router = useRouter();
+  const [isSaving, setSaving] = useState(false);
+  const [lastError, setLastError] = useState();
+  const editing = Boolean(initialData);
 
-   const {
+  const {
     register,
     handleSubmit,
-    watch, 
+    watch,
     setValue,
     formState: { errors },
   } = useForm({
-    mode: 'onTouched',
-   resolver: zodResolver(transactionSchema),
-   defaultValues: initialData ?? {
-      created_at: new Date().toISOString().split('T')[0]
-   }
-  })
+    mode: "onTouched",
+    resolver: zodResolver(transactionSchema),
+    defaultValues: initialData ?? {
+      created_at: new Date().toISOString().split("T")[0],
+    },
+  });
 
-  const router = useRouter()
-  const [isSaving, setSaving] = useState(false)
-  const [lastError, setLastError] = useState()
-  const type = watch('type')
-  const editing = Boolean(initialData)
+  const type = watch("type");
 
-    const onSubmit = async (data) => {
-    setSaving(true)
-    setLastError()
+  const onSubmit = async (data) => {
+    setSaving(true);
+    setLastError();
     try {
       if (editing) {
-         await updateTranscation(initialData.id, data)
+        await updateTranscation(initialData.id, data);
+      } else {
+        await createTranscation(data);
       }
-      else {
-        await createTranscation(data)
-      }
-      
-      router.push('/dashboard')
-    } 
-    catch (error) {
-      setLastError(error?.message)
+      router.push("/dashboard");
+    } catch (error) {
+      setLastError(error?.message);
+    } finally {
+      setSaving(false);
     }
-    finally {
-      setSaving(false)
-    }
-  }
+  };
 
-    return (
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="mb-1">Type</Label>
-                <Select {...register('type',{
-                  onChange: (e) => {
-                    if (e.target.value !== 'Expense') {
-                      setValue("category", "")
-                    }
-                  }
-                })}>
-                {types.map(type => <option key={type}>{type}</option>)}
-                </Select>
-                <FormError error={errors.type?.message} />
-                </div>  
+  return (
+    <motion.form
+      onSubmit={handleSubmit(onSubmit)}
+      initial={reduce ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="space-y-6"
+    >
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label className="mb-1">Type</Label>
+          <Select
+            {...register("type", {
+              onChange: (e) => {
+                if (e.target.value !== "Expense") {
+                  setValue("category", "");
+                }
+              },
+            })}
+          >
+            {types.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </Select>
+          <FormError error={errors.type?.message} />
+        </div>
 
-                
-              <div>
-               <Label className="mb-1">Category</Label>
-                <Select {...register('category')} disabled={type !== 'Expense'}>
-                 <option value="">Select a category</option>
-                {categories.map(category => <option key={category}>{category}</option>)}
-                </Select>  
-                <FormError error={errors.category?.message} />
-              </div>  
-            
+        <div className="space-y-2">
+          <Label className="mb-1">Category</Label>
+          <Select {...register("category")} disabled={type !== "Expense"}>
+            <option value="">Select a category</option>
+            {categories.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </Select>
+          <FormError error={errors.category?.message} />
+        </div>
 
-            <div>
-              <Label className="mb-1">Date</Label>
-              <Input {...register('created_at')} disabled={editing}/>
-              <FormError error={errors.created_at?.message} />
-              </div>
+        <div className="space-y-2">
+          <Label className="mb-1">Date</Label>
+          <Input {...register("created_at")} disabled={editing} />
+          <FormError error={errors.created_at?.message} />
+        </div>
 
-            <div>
-              <Label className="mb-1">Amount</Label>
-              <Input type="number" {...register('amount')}/> 
-              <FormError error={errors.amount?.message} />
-              </div>
+        <div className="space-y-2">
+          <Label className="mb-1">Amount</Label>
+          <Input type="number" step="0.01" min="0" {...register("amount")} />
+          <FormError error={errors.amount?.message} />
+        </div>
 
-            <div className="col-span-1 md:col-span-2">
-              <Label className="mb-1">Description</Label>
-              <Input {...register('description')}/> 
-              <FormError error={errors.description?.message} />
-            </div>
-          </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label className="mb-1">Description</Label>
+          <Input {...register("description")} />
+          <FormError error={errors.description?.message} />
+        </div>
+      </div>
 
-             <div className="flex justify-between items-center">
-              <div>
-                {lastError && <FormError error={lastError} />}
-              </div>
-              <Button type="submit" disabled={isSaving}>Save</Button>
-            </div>
-        </form>
-    );
+      <div className="flex flex-col-reverse items-stretch justify-between gap-3 border-t border-slate-200 pt-5 dark:border-white/10 sm:flex-row sm:items-center">
+        <div>
+          {lastError ? <FormError error={lastError} /> : null}
+        </div>
+        <Button type="submit" disabled={isSaving} className="sm:min-w-32">
+          {isSaving ? "Saving…" : editing ? "Save changes" : "Save"}
+        </Button>
+      </div>
+    </motion.form>
+  );
 }

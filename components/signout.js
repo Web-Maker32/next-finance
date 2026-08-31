@@ -7,8 +7,8 @@ import { signOut } from "@/libs/action";
 export function SignOutButton() {
   return (
     <form action={signOut}>
-      <SubmitButton variant="ghost" size="sm">
-        <LogOut className="w-6 h-6" />
+      <SubmitButton variant="ghost" size="sm" aria-label="Sign out">
+        <LogOut className="h-5 w-5" />
       </SubmitButton>
     </form>
   );

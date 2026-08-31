@@ -1,3 +1,10 @@
-export default function Label(props) {
-  return <label {...props} className={`block text-gray-700 dark:text-gray-300 ${props.className || ''}`}></label>;
+export default function Label({ className = "", children, ...props }) {
+  return (
+    <label
+      {...props}
+      className={`block text-sm font-medium text-slate-700 dark:text-slate-300 ${className}`}
+    >
+      {children}
+    </label>
+  );
 }

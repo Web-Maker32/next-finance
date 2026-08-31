@@ -16,7 +16,7 @@ export default function DarkModeToggle({ defaultMode = "dark" }) {
   if (!mounted) {
     return (
       <Button variant="ghost" size="sm" aria-label="Toggle theme">
-        <div className="h-5 w-5" />
+        <div className="h-6 w-6" />
       </Button>
     );
   }
@@ -29,9 +29,9 @@ export default function DarkModeToggle({ defaultMode = "dark" }) {
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
       {theme === "dark" ? (
-        <Sun className="h-5 w-5" />
+        <Sun className="h-6 w-6" />
       ) : (
-        <Moon className="h-5 w-5" />
+        <Moon className="h-6 w-6" />
       )}
     </Button>
   );

@@ -2,8 +2,12 @@ import { CircleX } from "lucide-react";
 import Alert from "@/components/alert";
 
 export default function AlertError({ children }) {
-    return <Alert icon={<div><CircleX className="text-red-700
-         dark:text-red-400 w-6 h-6"/></div>} title={<span className="text-red-700
-         dark:text-red-400">Error</span>}><span className="text-red-700
-         dark:text-red-400">{children}</span></Alert>
+  return (
+    <Alert
+      icon={<CircleX className="h-5 w-5 text-rose-600 dark:text-rose-400" />}
+      title={<span className="text-rose-700 dark:text-rose-400">Error</span>}
+    >
+      <span className="text-rose-700 dark:text-rose-400">{children}</span>
+    </Alert>
+  );
 }

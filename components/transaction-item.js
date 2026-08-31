@@ -1,76 +1,94 @@
 "use client";
 
-import { useEffect, useState } from "react"
-import { HandCoins, Wallet, Vault, Landmark, Pencil } from "lucide-react"
-import TransactionItemRemoveButton from "./transaction-item-remove-button"
-import Link from "next/link"
-import { sizes, variants } from "@/libs/veriant"
-import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency"
+import { useState } from "react";
+import Link from "next/link";
+import { Pencil, Trash2 } from "lucide-react";
+import Button from "@/components/button";
+import { deleteTransaction } from "@/libs/action";
 
-export default function TransactionItem({ onRemoved, id,type,category,amount,description}) {
-   
-  
-  const typesMap = {
-    'Income': {
-      icon: HandCoins,
-      colors: 'text-green-500 dark:text-green-400'
-    },
-    'Expense': {
-      icon: Wallet,
-      colors: 'text-red-500 dark:text-red-400'
-    },
-    'Savings': {
-       icon: Vault,
-      colors: 'text-yellow-500 dark:text-yellow-400'
-    },
-    'Investment': {
-      icon: Landmark,
-      colors: 'text-indigo-500 dark:text-indigo-400'
+export default function TransactionItem({
+  id,
+  type,
+  category,
+  description,
+  amount,
+  onRemoved,
+}) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const expense = type === "Expense";
+
+  const confirmDelete = async () => {
+    setBusy(true);
+    try {
+      await deleteTransaction(id);
+      onRemoved?.();
+      setOpen(false);
+    } finally {
+      setBusy(false);
     }
-  }
-  const IconComponent = typesMap[type].icon
-  const colors = typesMap[type].colors
+  };
 
-    const [currency, setCurrency] = useState('EUR')
+  return (
+    <>
+      <div className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-slate-50 dark:hover:bg-white/5">
+        <div className="min-w-0 grow">
+          <p className="truncate font-medium text-slate-900 dark:text-white">
+            {description}
+          </p>
+          <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+            {type}
+            {category ? ` · ${category}` : ""}
+          </p>
+        </div>
 
-    useEffect(() => {
-      const syncCurrency = () => setCurrency(getStoredCurrency())
+        <p
+          className={`hidden min-w-[90px] text-right font-medium tabular-nums sm:block ${
+            expense ? "text-slate-900 dark:text-white" : "text-emerald-600 dark:text-emerald-400"
+          }`}
+        >
+          {expense ? "-" : "+"}${Number(amount).toFixed(2)}
+        </p>
 
-      syncCurrency()
-      window.addEventListener('currency-updated', syncCurrency)
-
-      return () => window.removeEventListener('currency-updated', syncCurrency)
-    }, [])
-
-    const formattedAmount = formatCurrency(amount, currency)
-
-    return (<div className="w-full flex items-center">
-
-      <div className="flex items-center mr-4 grow">
-        <IconComponent className={`${colors} mr-2 w-5 h-5 hidden sm:block`} />
-        {description}
+        <div className="flex shrink-0">
+          <Link
+            href={`/dashboard/transactions/${id}/edit`}
+            className="inline-flex size-11 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white"
+            aria-label={`Edit ${description}`}
+          >
+            <Pencil className="h-4 w-4" />
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="inline-flex size-11 items-center justify-center rounded-lg text-slate-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+            aria-label={`Delete ${description}`}
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
-      <div className="min-w-[150px] items-center hidden md:flex">
-        {category && 
-        <div className="bg-gray-700 dark:bg-gray-100 text-gray-100 dark:text-gray-700 px-2 py-0.5 rounded">
-          {category}
-          </div>}
-      </div>
-
-      <div className="min-w-[70px] text-right">
-        {formattedAmount}
-      </div>
-
-      <div className="min-w-[100px] flex justify-end">
-        <Link href={`/dashboard/transactions/${id}/edit`} className={`${variants['ghost']} 
-        ${sizes['xs']}`}>
-          <Pencil className="w-4 h-4"/>
-        </Link>
-        <TransactionItemRemoveButton id={id} onRemoved={onRemoved} />
-      </div>
-    </div>)
+      {open ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0b1120]">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Delete this transaction?
+            </h2>
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+              “{description}” will be removed. This cannot be undone.
+            </p>
+            <div className="mt-6 flex justify-end gap-2">
+              <Button variant="ghost" onClick={() => setOpen(false)} disabled={busy}>
+                Cancel
+              </Button>
+              <Button onClick={confirmDelete} disabled={busy}>
+                {busy ? "Deleting…" : "Delete"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
 }
-
-
-

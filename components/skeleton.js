@@ -1,6 +1,7 @@
-export default function Skeleton(props) {
-    return (
-        <div className={`animate-pulse w-full h-4
-             bg-gray-300 dark:bg-gray-700 rounded-md ${props.className}`}></div>
-    );
+export default function Skeleton({ className = "" }) {
+  return (
+    <div
+      className={`h-4 w-full animate-pulse rounded-md bg-slate-200 dark:bg-slate-800 ${className}`}
+    />
+  );
 }

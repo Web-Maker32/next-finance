@@ -81,7 +81,7 @@ export default function HomeContent() {
 
         <motion.h1
           variants={item}
-          className="max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl"
+          className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl"
         >
           Track your money with confidence
         </motion.h1>
