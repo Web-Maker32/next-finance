@@ -1,39 +1,40 @@
-'use client'
+"use client";
 
-import { Settings,User,Camera } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Camera, Settings, User } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const links = [
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  { href: "/dashboard/settings/avatar", label: "Avatar", icon: Camera },
+  { href: "/dashboard/settings/profile", label: "Profile", icon: User },
+];
 
 export default function SideNav() {
-  const pathname = usePathname()
-  return <nav>
-    <ul className="space-y-2">
-        <li>
-            <Link href="/dashboard/settings" className={`px-2.5 py-2
-               flex items-center space-x-2 text-sm rounded-md
-                hover:bg-gray-100 dark:hover:bg-gray-800 ${pathname === '/dashboard/settings' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
-                <Settings className='w-4 h-4' />
-                <span>Settings</span>
-            </Link>
-        </li>
+  const pathname = usePathname();
 
-        <li>
-            <Link href="/dashboard/settings/avatar" className={`px-2.5 py-2
-               flex items-center space-x-2 text-sm rounded-md
-                hover:bg-gray-100 dark:hover:bg-gray-800 ${pathname === '/dashboard/settings/avatar' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
-                <Camera className='w-4 h-4' />
-                <span>Avatar</span>
-            </Link>
-        </li>
-
-        <li>
-            <Link href="/dashboard/settings/profile" className={`px-2.5 py-2
-               flex items-center space-x-2 text-sm rounded-md
-                hover:bg-gray-100 dark:hover:bg-gray-800 ${pathname === '/dashboard/settings/profile' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
-                <User className='w-4 h-4' />
-                <span>Profile</span>
-            </Link>
-        </li>
-    </ul>
-  </nav>
+  return (
+    <nav className="rounded-2xl border border-slate-200 bg-white p-2 dark:border-white/10 dark:bg-[#0b1120]/80">
+      <ul className="space-y-1">
+        {links.map(({ href, label, icon: Icon }) => {
+          const active = pathname === href;
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm transition ${
+                  active
+                    ? "bg-slate-100 font-medium text-slate-900 dark:bg-white/10 dark:text-white"
+                    : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-white/5"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
 }

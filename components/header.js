@@ -6,6 +6,7 @@ import { LogIn } from "lucide-react";
 import { sizes, variants } from "@/libs/veriant";
 import { SignOutButton } from "@/components/signout";
 import Avatar from "@/components/avatar";
+import HoverCard from "@/components/hover-card";
 
 export default async function Header({ className = "" }) {
   const theme = getServerTheme();
@@ -28,15 +29,34 @@ export default async function Header({ className = "" }) {
 
         {user ? (
           <>
-            <Link
-              href="/dashboard/settings"
-              className={`${variants["ghost"]} ${sizes["sm"]} flex max-w-[180px] items-center gap-2 truncate sm:max-w-none`}
+            <HoverCard
+              trigger={
+                <Link
+                  href="/dashboard/settings"
+                  className={`${variants["ghost"]} ${sizes["sm"]} flex max-w-[180px] items-center gap-2 truncate sm:max-w-none`}
+                >
+                  <Avatar />
+                  <span className="hidden truncate text-sm sm:inline">
+                    {displayName}
+                  </span>
+                </Link>
+              }
             >
-              <Avatar />
-              <span className="hidden truncate text-sm sm:inline">
-                {displayName}
-              </span>
-            </Link>
+              <div className="flex items-center gap-3">
+                <Avatar size="sm" />
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
+                    {displayName}
+                  </p>
+                  <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+                Open settings to change name, currency, or avatar.
+              </p>
+            </HoverCard>
             <SignOutButton />
           </>
         ) : (
