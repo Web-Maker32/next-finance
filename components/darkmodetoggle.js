@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import useDarkMode from "@/hooks/use-dark-mode";
 import Button from "./button";
 import { Moon, Sun } from "lucide-react";
 
 export default function DarkModeToggle({ defaultMode = "dark" }) {
   const { theme, toggleTheme } = useDarkMode(defaultMode);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   if (!mounted) {
     return (

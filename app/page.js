@@ -1,22 +1,66 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import HomeContent from "@/components/home-content";
+import { createClient } from "@/libs/supabase/server";
 
 export const metadata = {
   title: "Home | Next Finance",
   description: "Track your money with confidence.",
 };
 
-export default function Page() {
+export default async function Page() {
+  const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  let dashboardData = null;
+
+  if (auth?.user) {
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+
+    const [{ data: transactions }, { data: budgets }] = await Promise.all([
+      supabase
+        .from("active_transactions")
+        .select("amount, type, category, description, created_at")
+        .gte("created_at", monthStart.toISOString())
+        .order("created_at", { ascending: false })
+        .limit(1000),
+      supabase.from("budgets").select("category, monthly_limit").eq("category", "Food").maybeSingle(),
+    ]);
+
+    const rows = transactions || [];
+    const income = rows
+      .filter((row) => row.type === "Income")
+      .reduce((sum, row) => sum + Number(row.amount || 0), 0);
+    const spending = rows
+      .filter((row) => row.type === "Expense")
+      .reduce((sum, row) => sum + Number(row.amount || 0), 0);
+    const foodSpent = rows
+      .filter((row) => row.type === "Expense" && row.category === "Food")
+      .reduce((sum, row) => sum + Number(row.amount || 0), 0);
+
+    dashboardData = {
+      balance: income - spending,
+      income,
+      spending,
+      transactions: rows.slice(0, 3),
+      foodBudget: budgets?.monthly_limit ? {
+        spent: foodSpent,
+        limit: Number(budgets.monthly_limit),
+      } : null,
+    };
+  }
+
   return (
     <div className="min-h-screen">
       <main className="px-4 py-10 sm:px-6 lg:px-8">
-        <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-200/40 backdrop-blur-xl dark:border-white/10 dark:bg-[#0b1120]/80 dark:shadow-black/40 sm:p-8 lg:p-12">
+        <Header />
+
+        <section className="relative mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-xl shadow-slate-200/40 backdrop-blur-xl dark:border-white/10 dark:bg-[#0b1120]/80 dark:shadow-black/40 sm:mt-10 sm:p-8 lg:p-12">
           <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-20 h-64 w-64 rounded-full bg-indigo-500/10 blur-3xl" />
 
-          <Header />
-          <HomeContent />
+          <HomeContent dashboardData={dashboardData} />
         </section>
 
         <section className="mt-20">
@@ -27,7 +71,7 @@ export default function Page() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             {[
               {
                 step: "01",

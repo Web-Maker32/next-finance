@@ -16,7 +16,7 @@ export default async function Page() {
       <div>
         <h1 className="text-3xl font-semibold">Recurring</h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Subscriptions, salary, and bills. No bank accounts.
+          Subscriptions, salary, and bills.
         </p>
       </div>
       {error && (

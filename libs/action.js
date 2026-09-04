@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import crypto from "node:crypto";
 import { createClient } from "./supabase/server";
-import { settingsSchema, transactionSchema } from "./validation";
+import { budgetSchema, recurringSchema, settingsSchema, transactionSchema } from "./validation";
 
 function revalidateApp() {
   revalidatePath("/dashboard");
@@ -51,14 +53,23 @@ export async function importTransactions(rows) {
   const supabase = await createClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth?.user) throw new Error("Sign in first");
-  const payload = rows.map((r) => ({
-    type: r.type,
-    category: r.category || "Other",
-    amount: r.amount,
-    description: r.description,
-    created_at: r.created_at,
+  if (!Array.isArray(rows) || rows.length === 0 || rows.length > 2000) {
+    throw new Error("Import must contain between 1 and 2000 rows");
+  }
+  const payload = rows.map((row) => ({
+    type: row.type,
+    category: row.category || "Other",
+    amount: row.amount,
+    description: row.description,
+    created_at: row.created_at,
   }));
-  const { error } = await supabase.from("active_transactions").insert(payload);
+  const validated = payload.map((row) => transactionSchema.safeParse(row));
+  if (validated.some((result) => !result.success)) {
+    throw new Error("Import contains invalid transaction data");
+  }
+  const { error } = await supabase
+    .from("active_transactions")
+    .insert(validated.map((result) => result.data));
   if (error) throw new Error(error.message || "Import failed");
   revalidateApp();
   return { count: payload.length };
@@ -68,13 +79,15 @@ export async function saveBudget(formData) {
   const supabase = await createClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth?.user) throw new Error("Sign in first");
-  const category = formData.get("category")?.toString();
-  const monthly_limit = Number(formData.get("monthly_limit"));
-  if (!category || !monthly_limit) throw new Error("Category and limit required");
+  const validated = budgetSchema.safeParse({
+    category: formData.get("category")?.toString(),
+    monthly_limit: formData.get("monthly_limit"),
+  });
+  if (!validated.success) throw new Error("Category and a positive limit are required");
   const { error } = await supabase
     .from("budgets")
     .upsert(
-      { user_id: auth.user.id, category, monthly_limit },
+      { user_id: auth.user.id, ...validated.data },
       { onConflict: "user_id,category" }
     );
   if (error) throw new Error(error.message || "Could not save budget");
@@ -83,6 +96,8 @@ export async function saveBudget(formData) {
 
 export async function deleteBudget(id) {
   const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error("Sign in first");
   const { error } = await supabase.from("budgets").delete().eq("id", id);
   if (error) throw new Error("Could not delete budget");
   revalidateApp();
@@ -90,31 +105,36 @@ export async function deleteBudget(id) {
 
 export async function saveRecurring(formData) {
   const supabase = await createClient();
-  const row = {
+  const validated = recurringSchema.safeParse({
     description: formData.get("description")?.toString(),
-    amount: Number(formData.get("amount")),
+    amount: formData.get("amount"),
     type: formData.get("type")?.toString() || "Expense",
     category: formData.get("category")?.toString() || "Other",
     interval: formData.get("interval")?.toString() || "monthly",
     next_date: formData.get("next_date")?.toString(),
     active: true,
-  };
-  if (!row.description || !row.amount || !row.next_date) {
-    throw new Error("Description, amount and next date required");
-  }
-  const { error } = await supabase.from("recurring_transactions").insert(row);
+  });
+  if (!validated.success) throw new Error("Enter a valid recurring transaction");
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error("Sign in first");
+  const { error } = await supabase.from("recurring_transactions").insert({
+    user_id: auth.user.id,
+    ...validated.data,
+  });
   if (error) throw new Error(error.message || "Could not save recurring item");
   revalidateApp();
 }
 
 export async function deleteRecurring(id) {
   const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error("Sign in first");
   const { error } = await supabase.from("recurring_transactions").delete().eq("id", id);
   if (error) throw new Error("Could not delete recurring item");
   revalidateApp();
 }
 
-export async function createTranscation(formData) {
+export async function createTransaction(formData) {
   const validated = transactionSchema.safeParse(formData);
 
   if (!validated.success) {
@@ -124,7 +144,7 @@ export async function createTranscation(formData) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
-    .insert(formData);
+    .insert(validated.data);
 
   if (error) {
     throw new Error("Failed to create transaction");
@@ -133,7 +153,7 @@ export async function createTranscation(formData) {
   revalidatePath("/dashboard");
 }
 
-export async function updateTranscation(id, formData) {
+export async function updateTransaction(id, formData) {
   const validated = transactionSchema.safeParse(formData);
 
   if (!validated.success) {
@@ -143,7 +163,7 @@ export async function updateTranscation(id, formData) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
-    .update(formData)
+    .update(validated.data)
     .eq("id", id);
   if (error) {
     throw new Error("Failed to create transaction");
@@ -153,13 +173,14 @@ export async function updateTranscation(id, formData) {
 }
 
 export async function deleteTransaction(id) {
-  const supabase = await createClient()
+  const supabase = await createClient();
   const { error } = await supabase
     .from("active_transactions")
     .delete()
-    .eq("id", id)
-  revalidatePath("/dashboard")
-} 
+    .eq("id", id);
+  if (error) throw new Error("Could not delete transaction");
+  revalidatePath("/dashboard");
+}
 
 export async function login(prevState, formData) {
   const supabase = await createClient()
@@ -276,8 +297,21 @@ export async function signOut() {
 export async function uploadAvatar(prevState, formData) {
   const supabase = await createClient()
   const file = formData.get('file')
-  const fileExt = file.name.split('.').pop()
-  const fileName = `${Math.random()}.${fileExt}`
+  if (!(file instanceof File) || !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+    return {
+      error: true,
+      message: 'Please choose an image smaller than 5 MB',
+    }
+  }
+  const { data: auth } = await supabase.auth.getUser()
+  if (!auth?.user) {
+    return {
+      error: true,
+      message: 'Sign in first',
+    }
+  }
+  const fileExt = file.type.split('/')[1]?.replace(/[^a-z0-9]/gi, '') || 'bin'
+  const fileName = `${auth.user.id}/${crypto.randomUUID()}.${fileExt}`
   const {error} = await supabase.storage
   .from('avatar')
   .upload(fileName, file)

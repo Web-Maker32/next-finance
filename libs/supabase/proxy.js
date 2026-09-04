@@ -9,41 +9,17 @@ export async function updateSession(request) {
     },
   })
 
-  const supabase = await createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        get(name) {
-          return request.cookies.get(name)?.value
-        },
-        set(name, value, options) {
-          // Update the request cookies so future Server Components can read them
-          request.cookies.set({ name, value, ...options })
-          
-          // Sync the updated cookies to the response headers
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({ name, value, ...options })
-        },
-        remove(name, options) {
-          // Sync the deleted cookies to the request
-          request.cookies.set({ name, value: '', ...options })
-          
-          // Sync the deleted cookies to the response headers
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({ name, value: '', ...options })
-        },
-      },
-    }
-  )
+  const supabase = await createClient({
+    getAll() {
+      return request.cookies.getAll()
+    },
+    setAll(cookiesToSet) {
+      cookiesToSet.forEach(({ name, value, options }) => {
+        request.cookies.set({ name, value, ...options })
+        response.cookies.set(name, value, options)
+      })
+    },
+  })
 
   // 2. This triggers the cookie refresh logic above if the session is expired
   const { data } = await supabase.auth.getUser()

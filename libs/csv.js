@@ -55,7 +55,7 @@ export function parseCsv(text) {
 function typesMatch(value) {
   const v = value.toLowerCase();
   if (v.includes("invest")) return "Investment";
-  if (v.includes("sav")) return "Savings";
+  if (v.includes("sav")) return "Saving";
   if (v.includes("inc")) return "Income";
   return "Expense";
 }

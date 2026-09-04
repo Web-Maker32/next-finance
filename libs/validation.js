@@ -12,7 +12,7 @@ export const settingsSchema = z.object({
 
 export const transactionSchema = z.object({
     type: z.enum(types),
-    category: z.preprocess(val => val?.length ? val : undefined, z.string().optional()),
+    category: z.preprocess(val => val?.length ? val : undefined, z.enum(categories).optional()),
     amount: z.coerce.number().min(1, {
         message: "Amount must be at least 1"
     }),
@@ -28,4 +28,21 @@ export const transactionSchema = z.object({
 }, {
   path: ["category"],
   message: "Category is required for Expenses"
+})
+
+export const budgetSchema = z.object({
+        category: z.enum(categories),
+        monthly_limit: z.coerce.number().positive(),
+})
+
+export const recurringSchema = z.object({
+        description: z.string().trim().min(1),
+        amount: z.coerce.number().positive(),
+        type: z.enum(types),
+        category: z.enum(categories),
+        interval: z.enum(["weekly", "monthly", "yearly"]),
+        next_date: z.string().refine(val => !isNaN(Date.parse(val)), {
+            message: "Date must be valid"
+        }),
+        active: z.literal(true),
 })

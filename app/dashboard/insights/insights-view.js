@@ -17,13 +17,12 @@ export default function InsightsView({
   const format = (n) => formatCurrency(n, getStoredCurrency());
   const entries = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
   const total = entries.reduce((s, [, n]) => s + n, 0) || 1;
-  let angle = 0;
-  const slices = entries.map(([label, value], i) => {
+  const slices = entries.reduce((result, [label, value], i) => {
     const next = (value / total) * 360;
-    const start = angle;
-    angle += next;
-    return { label, value, color: colors[i % colors.length], start, next };
-  });
+    const start = result.at(-1)?.start + result.at(-1)?.next || 0;
+    result.push({ label, value, color: colors[i % colors.length], start, next });
+    return result;
+  }, []);
 
   return (
     <div className="space-y-6">

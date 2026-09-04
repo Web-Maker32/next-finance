@@ -1,18 +1,22 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+
+const getTheme = (defaultTheme) => {
+  if (typeof window === "undefined") return defaultTheme;
+  return localStorage.getItem("theme") ||
+    (document.documentElement.classList.contains("dark") ? "dark" : defaultTheme);
+};
 
 const useDarkMode = (defaultTheme = "dark") => {
-  const [theme, setTheme] = useState(defaultTheme);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    const hasDarkClass = document.documentElement.classList.contains("dark");
-    const current = saved || (hasDarkClass ? "dark" : defaultTheme);
-
-    applyTheme(current);
-    setTheme(current);
-  }, [defaultTheme]);
+  const theme = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener("themechange", onStoreChange);
+      return () => window.removeEventListener("themechange", onStoreChange);
+    },
+    () => getTheme(defaultTheme),
+    () => defaultTheme
+  );
 
   const applyTheme = (newTheme) => {
     const root = document.documentElement;
@@ -25,11 +29,11 @@ const useDarkMode = (defaultTheme = "dark") => {
 
     localStorage.setItem("theme", newTheme);
     document.cookie = `theme=${newTheme}; path=/; max-age=31536000; SameSite=Lax`;
+    window.dispatchEvent(new Event("themechange"));
   };
 
   const setAndSaveTheme = useCallback((newTheme) => {
     applyTheme(newTheme);
-    setTheme(newTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {

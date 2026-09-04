@@ -10,18 +10,18 @@ import HoverCard from "@/components/hover-card";
 import AppNav from "@/components/app-nav";
 
 export default async function Header({ className = "", showNav = false }) {
-  const theme = getServerTheme();
+  const theme = await getServerTheme();
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   const user = data?.user;
   const displayName = user?.user_metadata?.name ?? user?.email ?? "Account";
 
   return (
-    <header className={className}>
-      <div className="flex items-center justify-between gap-4">
+    <header className={`sticky top-0 z-40 -mx-4 border-b border-slate-200/80 bg-slate-50/95 px-4 py-5 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 dark:border-white/10 dark:bg-[#05070f]/95 ${className}`}>
+      <div className="flex min-h-12 items-center justify-between gap-4">
         <Link
           href="/dashboard"
-          className="text-lg font-semibold tracking-tight text-slate-900 transition hover:text-sky-600 dark:text-white dark:hover:text-sky-400 sm:text-xl"
+          className="text-xl font-semibold tracking-tight text-slate-900 transition hover:text-sky-600 dark:text-white dark:hover:text-sky-400 sm:text-2xl"
         >
           Next Finance
         </Link>
@@ -35,7 +35,7 @@ export default async function Header({ className = "", showNav = false }) {
                 trigger={
                   <Link
                     href="/dashboard/settings"
-                    className={`${variants["ghost"]} ${sizes["sm"]} flex max-w-[180px] items-center gap-2 truncate sm:max-w-none`}
+                    className={`${variants["ghost"]} ${sizes["sm"]} flex min-h-11 items-center gap-2 truncate`}
                   >
                     <Avatar />
                     <span className="hidden truncate text-sm sm:inline">
@@ -66,8 +66,9 @@ export default async function Header({ className = "", showNav = false }) {
               href="/login"
               className={`${variants["ghost"]} ${sizes["sm"]} flex items-center gap-2`}
               aria-label="Sign in"
+              title="Sign in"
             >
-              <LogIn className="h-4 w-4" />
+              <LogIn className="h-6 w-6" />
               <span className="hidden sm:inline">Sign in</span>
             </Link>
           )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
 import Button from "@/components/button";
@@ -16,18 +16,33 @@ export default function TransactionItem({
 }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const dialogRef = useRef(null);
   const expense = type === "Expense";
 
   const confirmDelete = async () => {
     setBusy(true);
+    setError("");
     try {
       await deleteTransaction(id);
       onRemoved?.();
       setOpen(false);
+    } catch {
+      setError("Could not delete this transaction. Please try again.");
     } finally {
       setBusy(false);
     }
   };
+
+  useEffect(() => {
+    if (!open) return;
+    dialogRef.current?.focus();
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && !busy) setOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, busy]);
 
   return (
     <>
@@ -43,7 +58,7 @@ export default function TransactionItem({
         </div>
 
         <p
-          className={`hidden min-w-[90px] text-right font-medium tabular-nums sm:block ${
+            className={`min-w-[78px] text-right text-sm font-medium tabular-nums sm:min-w-[90px] sm:text-base ${
             expense ? "text-slate-900 dark:text-white" : "text-emerald-600 dark:text-emerald-400"
           }`}
         >
@@ -70,14 +85,24 @@ export default function TransactionItem({
       </div>
 
       {open ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0b1120]">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onMouseDown={() => !busy && setOpen(false)}>
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`delete-title-${id}`}
+            aria-describedby={`delete-description-${id}`}
+            tabIndex={-1}
+            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 outline-none dark:border-white/10 dark:bg-[#0b1120]"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <h2 id={`delete-title-${id}`} className="text-lg font-semibold text-slate-900 dark:text-white">
               Delete this transaction?
             </h2>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            <p id={`delete-description-${id}`} className="mt-2 text-sm text-slate-500 dark:text-slate-400">
               “{description}” will be removed. This cannot be undone.
             </p>
+            {error && <p className="mt-3 text-sm text-rose-500" role="alert">{error}</p>}
             <div className="mt-6 flex justify-end gap-2">
               <Button variant="ghost" onClick={() => setOpen(false)} disabled={busy}>
                 Cancel

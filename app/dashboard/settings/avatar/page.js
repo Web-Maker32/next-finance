@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Camera, ImagePlus } from "lucide-react";
 import AlertError from "@/components/alert-error";
 import AlertSuccess from "@/components/alert-success";
@@ -51,6 +52,18 @@ export default function Page() {
   const [preview, setPreview] = useState("");
   const [busy, setBusy] = useState(false);
   const fileRef = useRef(null);
+  const previewRef = useRef("");
+
+  useEffect(() => () => {
+    if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+  }, []);
+
+  const setPreviewUrl = (file) => {
+    if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+    const url = URL.createObjectURL(file);
+    previewRef.current = url;
+    setPreview(url);
+  };
 
   const handleChange = async (event) => {
     const file = event.target.files?.[0];
@@ -62,9 +75,9 @@ export default function Page() {
       const transfer = new DataTransfer();
       transfer.items.add(cropped);
       event.target.files = transfer.files;
-      setPreview(URL.createObjectURL(cropped));
+      setPreviewUrl(cropped);
     } catch {
-      setPreview(URL.createObjectURL(file));
+      setPreviewUrl(file);
     } finally {
       setBusy(false);
     }
@@ -93,9 +106,12 @@ export default function Page() {
         <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
           <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/5">
             {preview ? (
-              <img
+              <Image
                 src={preview}
                 alt="Avatar preview"
+                fill
+                unoptimized
+                sizes="112px"
                 className="h-full w-full object-cover"
               />
             ) : (

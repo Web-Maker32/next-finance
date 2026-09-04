@@ -7,8 +7,8 @@ import Button from "@/components/button";
 import { FormError } from "@/components/form-error";
 import { categories, types } from "@/libs/consts";
 import { transactionSchema } from "@/libs/validation";
-import { createTranscation, updateTranscation } from "@/libs/action";
-import { useForm } from "react-hook-form";
+import { createTransaction, updateTransaction } from "@/libs/action";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,7 +24,7 @@ export default function TransactionForm({ initialData }) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm({
@@ -35,16 +35,16 @@ export default function TransactionForm({ initialData }) {
     },
   });
 
-  const type = watch("type");
+  const type = useWatch({ control, name: "type" });
 
   const onSubmit = async (data) => {
     setSaving(true);
     setLastError();
     try {
       if (editing) {
-        await updateTranscation(initialData.id, data);
+        await updateTransaction(initialData.id, data);
       } else {
-        await createTranscation(data);
+        await createTransaction(data);
       }
       router.push("/dashboard");
     } catch (error) {

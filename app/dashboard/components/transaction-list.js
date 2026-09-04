@@ -15,14 +15,18 @@ export default function TransactionList({ range, initialTransactions }) {
   const [transactions, setTransactions] = useState(initialTransactions);
   const [buttonHidden, setButtonHidden] = useState(initialTransactions.length === 0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const grouped = groupAndSumTransactionsByDate(transactions);
 
   const handleClick = async () => {
     setLoading(true);
+    setError("");
     try {
       const next = await fetchTransactions(range, transactions.length, 10);
       setButtonHidden(next.length === 0);
       setTransactions((prev) => [...prev, ...next]);
+    } catch {
+      setError("Could not load more transactions. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -97,6 +101,7 @@ export default function TransactionList({ range, initialTransactions }) {
           </Button>
         </div>
       )}
+      {error && <p className="text-center text-sm text-rose-500" role="alert">{error}</p>}
     </div>
   );
 }
