@@ -27,8 +27,11 @@ const links = [
 export default function AppNav() {
   const path = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
-  const primaryLinks = links.slice(0, 4);
-  const secondaryLinks = links.slice(4);
+  const primaryLinks = links.slice(0, 3);
+  const secondaryLinks = links.slice(3);
+  const secondaryActive = secondaryLinks.some(({ href }) =>
+    path === href || path.startsWith(`${href}/`)
+  );
 
   const renderLink = ({ href, label, icon: Icon }) => {
     const active =
@@ -67,7 +70,11 @@ export default function AppNav() {
           aria-expanded={moreOpen}
           aria-controls="mobile-more-menu"
           onClick={() => setMoreOpen((open) => !open)}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-200/70 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white ${
+            secondaryActive
+              ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+              : "text-slate-600 hover:bg-slate-200/70 hover:text-slate-900"
+          }`}
         >
           <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
           More
