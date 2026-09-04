@@ -18,15 +18,15 @@ export default async function Header({ className = "", showNav = false }) {
 
   return (
     <header className={`sticky top-0 z-40 -mx-4 border-b border-slate-200/80 bg-slate-50/95 px-4 py-5 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 dark:border-white/10 dark:bg-[#05070f]/95 ${className}`}>
-      <div className="flex min-h-12 items-center justify-between gap-4">
+      <div className="flex min-h-12 min-w-0 items-center justify-between gap-2 sm:gap-4">
         <Link
           href="/dashboard"
-          className="text-xl font-semibold tracking-tight text-slate-900 transition hover:text-sky-600 dark:text-white dark:hover:text-sky-400 sm:text-2xl"
+          className="min-w-0 truncate text-lg font-semibold tracking-tight text-slate-900 transition hover:text-sky-600 dark:text-white dark:hover:text-sky-400 sm:text-2xl"
         >
           Next Finance
         </Link>
 
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <DarkModeToggle defaultMode={theme} />
 
           {user ? (

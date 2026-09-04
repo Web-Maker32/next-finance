@@ -60,7 +60,7 @@ export default function AppNav() {
         {links.map(renderLink)}
       </div>
 
-      <div className="flex items-center gap-1 md:hidden">
+      <div className="flex max-w-full gap-1 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">
         {primaryLinks.map(renderLink)}
         <button
           type="button"
