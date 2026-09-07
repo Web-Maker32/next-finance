@@ -19,7 +19,13 @@ export default function SettingsForm({ defaults }) {
   const router = useRouter();
   const [state, formAction] = useActionState(updateSettings, initialState);
   const [name, setName] = useState(defaults?.name || "");
-  const [currency, setCurrency] = useState(defaults?.currency || "EUR");
+  const initialCurrency = defaults?.currency || "EUR";
+  const [currency, setCurrency] = useState(
+    currencies.includes(initialCurrency) ? initialCurrency : "CUSTOM"
+  );
+  const [customCurrency, setCustomCurrency] = useState(
+    currencies.includes(initialCurrency) ? "" : initialCurrency
+  );
   const [defaultView, setDefaultView] = useState(defaults?.defaultView || "last30days");
   const formKey = `${defaults?.name || ""}-${defaults?.currency || "EUR"}-${defaults?.defaultView || "last30days"}`;
 
@@ -69,7 +75,20 @@ export default function SettingsForm({ defaults }) {
               {c}
             </option>
           ))}
+          <option value="CUSTOM">Add your currency</option>
         </Select>
+        {currency === "CUSTOM" && (
+          <Input
+            type="text"
+            name="customCurrency"
+            id="customCurrency"
+            placeholder="Currency code, e.g. JPY"
+            value={customCurrency}
+            maxLength={3}
+            onChange={(e) => setCustomCurrency(e.target.value.toUpperCase())}
+            required
+          />
+        )}
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Used across the dashboard and transaction list.
         </p>

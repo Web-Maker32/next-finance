@@ -7,6 +7,7 @@ import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency";
 import Button from "@/components/button";
 import Input from "@/components/input";
 import Select from "@/components/select";
+import CategorySelect from "@/components/category-select";
 
 export default function RecurringClient({ items, categories, types }) {
   const router = useRouter();
@@ -32,11 +33,7 @@ export default function RecurringClient({ items, categories, types }) {
             <option key={t}>{t}</option>
           ))}
         </Select>
-        <Select name="category" defaultValue="Other">
-          {categories.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </Select>
+        <CategorySelect name="category" options={categories} defaultValue="Other" required />
         <Select name="interval" defaultValue="monthly">
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>

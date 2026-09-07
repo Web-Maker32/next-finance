@@ -7,7 +7,10 @@ export const settingsSchema = z.object({
     .string()
     .min(2, { message: "Username must be at least 2 characters long" }),
     defaultView: z.enum(dateRangeValues),
-    currency: z.enum(currencies).optional()
+        currency: z.union([
+            z.enum(currencies),
+            z.string().regex(/^[A-Z]{3}$/, "Enter a valid 3-letter currency code")
+        ]).optional()
 })
 
 export const transactionSchema = z.object({

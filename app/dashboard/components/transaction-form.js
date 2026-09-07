@@ -3,12 +3,13 @@
 import Input from "@/components/input";
 import Label from "@/components/label";
 import Select from "@/components/select";
+import CategorySelect from "@/components/category-select";
 import Button from "@/components/button";
 import { FormError } from "@/components/form-error";
 import { categories, types } from "@/libs/consts";
 import { transactionSchema } from "@/libs/validation";
 import { createTransaction, updateTransaction } from "@/libs/action";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -83,12 +84,19 @@ export default function TransactionForm({ initialData }) {
 
         <div className="space-y-2">
           <Label className="mb-1">Category</Label>
-          <Select {...register("category")} disabled={type !== "Expense"}>
-            <option value="">Select a category</option>
-            {categories.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </Select>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <CategorySelect
+                options={categories}
+                value={field.value || ""}
+                onChange={field.onChange}
+                disabled={type !== "Expense"}
+                required={type === "Expense"}
+              />
+            )}
+          />
           <FormError error={errors.category?.message} />
         </div>
 

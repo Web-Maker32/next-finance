@@ -6,7 +6,7 @@ import { deleteBudget, saveBudget } from "@/libs/action";
 import { formatCurrency, getStoredCurrency } from "@/hooks/use-format-currency";
 import Button from "@/components/button";
 import Input from "@/components/input";
-import Select from "@/components/select";
+import CategorySelect from "@/components/category-select";
 
 function tone(pct) {
   if (pct >= 100) return "bg-rose-500";
@@ -36,11 +36,7 @@ export default function BudgetClient({ items, categories }) {
           });
         }}
       >
-        <Select name="category" defaultValue={categories[0]} required>
-          {categories.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </Select>
+        <CategorySelect name="category" options={categories} defaultValue={categories[0]} required />
         <Input name="monthly_limit" type="number" min="1" step="1" placeholder="Monthly limit" required />
         <Button disabled={pending}>Save budget</Button>
       </form>

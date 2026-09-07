@@ -373,10 +373,14 @@ export async function uploadAvatar(prevState, formData) {
 }
 
 export async function updateSettings(prevState, formData) {
+  const selectedCurrency = formData.get('currency')
+  const requestedCurrency = selectedCurrency === 'CUSTOM'
+    ? formData.get('customCurrency')?.toString().trim().toUpperCase()
+    : selectedCurrency
   const validated = settingsSchema.safeParse({
     name: formData.get('name'),
     defaultView: formData.get('defaultView'),
-    currency: formData.get('currency')
+    currency: requestedCurrency
   })
 
  if (!validated.success) {
@@ -385,27 +389,32 @@ export async function updateSettings(prevState, formData) {
    }
  }
 
+const supabase = await createClient();
+const { data: auth } = await supabase.auth.getUser();
+const current = auth?.user?.user_metadata || {};
 
-  const supabase = await createClient()
-  const {error} = await supabase.auth
-    .updateUser({
-      data: {
-        name: validated.data.name,
-        defaultView: validated.data.defaultView,
-        currency: validated.data.currency
-      }
-    })
-    
-  if (error) {
-    return{
-      error: true,
-      message: 'Failed updating setting',
-      errors: {}
-    }
-  }
+const currency = validated.data.currency
+const baseCurrency = current.baseCurrency || currency;
 
+const { error } = await supabase.auth.updateUser({
+  data: {
+    name: validated.data.name,
+    defaultView: validated.data.defaultView,
+    currency,
+    baseCurrency,
+  },
+});
+
+if (error) {
   return {
-    message: 'Updated user settings',
-    errors: {}
-  }
+    error: true,
+    message: "Failed updating setting",
+    errors: {},
+  };
+}
+
+return {
+  message: "Updated user settings",
+  errors: {},
+};
 }
