@@ -73,7 +73,7 @@ export default function InsightsView({
       <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0b1120]/80">
         <h2 className="font-medium">Category breakdown</h2>
         {entries.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">No expenses in this range.</p>
+          <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">No expenses in this range.</p>
         ) : (
           <div className="mt-6 flex flex-col items-center gap-8 sm:flex-row">
             <svg viewBox="0 0 32 32" className="h-40 w-40 -rotate-90">
@@ -118,7 +118,7 @@ export default function InsightsView({
 function Stat({ label, value }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0b1120]/80">
-      <p className="text-sm text-slate-500">{label}</p>
+      <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );

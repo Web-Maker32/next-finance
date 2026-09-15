@@ -3,9 +3,9 @@
 import AlertError from "@/components/alert-error";
 import AlertSuccess from "@/components/alert-success";
 import DateRangeSelect from "@/components/date-range-select";
+import CurrencySelect from "@/components/currency-select";
 import Input from "@/components/input";
 import Label from "@/components/label";
-import Select from "@/components/select";
 import SubmitButton from "@/components/submit-button";
 import { FormError } from "@/components/form-error";
 import { currencies } from "@/libs/consts";
@@ -28,13 +28,16 @@ export default function SettingsForm({ defaults }) {
   );
   const [defaultView, setDefaultView] = useState(defaults?.defaultView || "last30days");
   const formKey = `${defaults?.name || ""}-${defaults?.currency || "EUR"}-${defaults?.defaultView || "last30days"}`;
+  const storedCurrency = currency === "CUSTOM" ? customCurrency : currency;
 
   useEffect(() => {
     try {
-      localStorage.setItem("currency", currency);
-      window.dispatchEvent(new CustomEvent("currency-updated", { detail: currency }));
+      if (storedCurrency) {
+        localStorage.setItem("currency", storedCurrency);
+        window.dispatchEvent(new CustomEvent("currency-updated", { detail: storedCurrency }));
+      }
     } catch {}
-  }, [currency]);
+  }, [storedCurrency]);
 
   useEffect(() => {
     if (state?.message && !state?.error) router.refresh();
@@ -64,19 +67,13 @@ export default function SettingsForm({ defaults }) {
 
       <div className="space-y-2">
         <Label htmlFor="currency">Currency</Label>
-        <Select
+        <CurrencySelect
           name="currency"
           id="currency"
+          options={[...currencies, "CUSTOM"]}
           value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
-        >
-          {currencies.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-          <option value="CUSTOM">Add your currency</option>
-        </Select>
+          onChange={setCurrency}
+        />
         {currency === "CUSTOM" && (
           <Input
             type="text"

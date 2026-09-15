@@ -44,7 +44,7 @@ export default function BudgetClient({ items, categories }) {
 
       <ul className="space-y-3">
         {items.length === 0 && (
-          <li className="text-sm text-slate-500">No budgets yet.</li>
+          <li className="text-sm text-slate-500 dark:text-slate-400">No budgets yet.</li>
         )}
         {items.map((b) => {
           const pct = Math.min(100, Math.round((b.spent / b.monthly_limit) * 100));

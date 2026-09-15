@@ -44,7 +44,7 @@ export default function RecurringClient({ items, categories, types }) {
       </form>
 
       <ul className="space-y-2">
-        {items.length === 0 && <li className="text-sm text-slate-500">None yet.</li>}
+        {items.length === 0 && <li className="text-sm text-slate-500 dark:text-slate-400">None yet.</li>}
         {items.map((item) => (
           <li
             key={item.id}
@@ -52,7 +52,7 @@ export default function RecurringClient({ items, categories, types }) {
           >
             <div>
               <p className="font-medium">{item.description}</p>
-              <p className="text-slate-500">
+              <p className="text-slate-500 dark:text-slate-400">
                 {item.type} · {item.interval} · next {item.next_date}
               </p>
             </div>

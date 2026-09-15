@@ -102,7 +102,7 @@ export default function TransactionItem({
             <p id={`delete-description-${id}`} className="mt-2 text-sm text-slate-500 dark:text-slate-400">
               “{description}” will be removed. This cannot be undone.
             </p>
-            {error && <p className="mt-3 text-sm text-rose-500" role="alert">{error}</p>}
+            {error && <p className="mt-3 text-sm text-rose-500 dark:text-rose-400" role="alert">{error}</p>}
             <div className="mt-6 flex justify-end gap-2">
               <Button variant="ghost" onClick={() => setOpen(false)} disabled={busy}>
                 Cancel

@@ -92,8 +92,9 @@ export default function TransactionList({ range, initialTransactions }) {
       )}
 
       {!buttonHidden && (
-        <div className="flex justify-center">
-          <Button variant="ghost" onClick={handleClick} disabled={loading}>
+        <div className="flex w-full justify-center">
+         <Button
+           variant="ghost" className="max-w-full whitespace-nowrap px-3 text-sm" onClick={handleClick} disabled={loading}>
             <div className="flex items-center space-x-1">
               {loading && <LoaderCircle className="animate-spin" />}
               <div>Load More</div>
@@ -101,7 +102,7 @@ export default function TransactionList({ range, initialTransactions }) {
           </Button>
         </div>
       )}
-      {error && <p className="text-center text-sm text-rose-500" role="alert">{error}</p>}
+      {error && <p className="text-center text-sm text-rose-500 dark:text-rose-400" role="alert">{error}</p>}
     </div>
   );
 }

@@ -142,12 +142,12 @@ export default function HomeContent({ dashboardData }) {
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.55, delay: 0.25 }}
-          className="rounded-2xl border border-slate-200 bg-slate-950 p-4 text-white shadow-2xl shadow-slate-300/40 dark:border-white/10 dark:shadow-black/40 sm:p-5"
+          className="rounded-2xl border border-slate-200 bg-white p-4 text-slate-900 shadow-2xl shadow-slate-300/40 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:shadow-black/40 sm:p-5"
           aria-label="Preview of the Next Finance dashboard"
         >
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-white/10">
             <div>
-              <p className="text-xs text-slate-400">Monthly balance</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Monthly balance</p>
               <p className="mt-1 text-2xl font-semibold">{currency(preview.balance)}</p>
             </div>
             <span className="rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300">+12.8%</span>
@@ -156,8 +156,8 @@ export default function HomeContent({ dashboardData }) {
             <PreviewStat label="Income" value={currency(preview.income)} tone="text-sky-300" />
             <PreviewStat label="Spending" value={currency(preview.spending)} tone="text-rose-300" />
           </div>
-          <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <div className="flex items-center justify-between text-xs text-slate-400">
+          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>Recent transactions</span>
               <span>Last 30 days</span>
             </div>
@@ -174,16 +174,16 @@ export default function HomeContent({ dashboardData }) {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{transaction.description || "Transaction"}</p>
-                    <p className="text-xs text-slate-500">{date}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{date}</p>
                   </div>
                   <span className={`text-sm font-medium tabular-nums ${income ? "text-emerald-300" : "text-slate-200"}`}>{income ? "+" : "-"}{currency(transaction.amount)}</span>
                 </div>
                 );
               })}
-              {preview.transactions.length === 0 && <p className="py-3 text-sm text-slate-500">No transactions this month</p>}
+              {preview.transactions.length === 0 && <p className="py-3 text-sm text-slate-500 dark:text-slate-400">No transactions this month</p>}
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-3 rounded-xl bg-white/[0.04] p-3">
+          <div className="mt-4 flex items-center gap-3 rounded-xl bg-slate-50 p-3 dark:bg-white/[0.04]">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-400/10 text-amber-300">
               <Wallet className="h-4 w-4" />
             </div>
@@ -191,7 +191,7 @@ export default function HomeContent({ dashboardData }) {
               <p className="text-sm font-medium">Food budget</p>
               <div className="mt-1 h-1.5 rounded-full bg-white/10"><div className="h-full rounded-full bg-amber-300" style={{ width: `${budgetPercent}%` }} /></div>
             </div>
-            <span className="text-xs text-slate-400">{preview.foodBudget ? `${budgetPercent}%` : "No limit"}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{preview.foodBudget ? `${budgetPercent}%` : "No limit"}</span>
           </div>
         </motion.div>
       </div>
@@ -231,8 +231,8 @@ export default function HomeContent({ dashboardData }) {
 
 function PreviewStat({ label, value, tone }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
-      <p className="text-xs text-slate-400">{label}</p>
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/[0.04]">
+      <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
       <p className={`mt-1 text-lg font-semibold ${tone}`}>{value}</p>
     </div>
   );

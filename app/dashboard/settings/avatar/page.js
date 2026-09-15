@@ -115,7 +115,7 @@ export default function Page() {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="flex h-full w-full items-center justify-center text-slate-400">
+              <span className="flex h-full w-full items-center justify-center text-slate-400 dark:text-slate-500">
                 <Camera className="h-8 w-8" />
               </span>
             )}
@@ -125,7 +125,7 @@ export default function Page() {
             htmlFor="file"
             className="flex min-h-28 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-sky-400 hover:bg-sky-50 dark:border-white/15 dark:bg-white/5 dark:hover:border-sky-500/40 dark:hover:bg-sky-500/5"
           >
-            <ImagePlus className="mb-2 h-5 w-5 text-slate-400" />
+            <ImagePlus className="mb-2 h-5 w-5 text-slate-400 dark:text-slate-500" />
             <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
               {busy ? "Cropping…" : "Choose a photo"}
             </span>
