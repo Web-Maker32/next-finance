@@ -44,7 +44,7 @@ export default function CsvClient({ rows }) {
         </label>
       </div>
 
-      {error && <p className="mt-3 text-sm text-rose-400">{error}</p>}
+      {error && <p className="mt-3 text-sm text-rose-600 dark:text-rose-400">{error}</p>}
 
       {preview.length > 0 && (
         <div className="mt-4 space-y-3">

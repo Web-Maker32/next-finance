@@ -154,7 +154,7 @@ export default function HomeContent({ dashboardData }) {
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <PreviewStat label="Income" value={currency(preview.income)} tone="text-sky-300" />
-            <PreviewStat label="Spending" value={currency(preview.spending)} tone="text-rose-300" />
+            <PreviewStat label="Spending" value={currency(preview.spending)} tone="text-rose-600 dark:text-rose-300" />
           </div>
           <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -176,7 +176,7 @@ export default function HomeContent({ dashboardData }) {
                     <p className="truncate text-sm font-medium">{transaction.description || "Transaction"}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">{date}</p>
                   </div>
-                  <span className={`text-sm font-medium tabular-nums ${income ? "text-emerald-300" : "text-slate-200"}`}>{income ? "+" : "-"}{currency(transaction.amount)}</span>
+                  <span className={`text-sm font-medium tabular-nums ${income ? "text-emerald-600 dark:text-emerald-300" : "text-slate-900 dark:text-slate-200"}`}>{income ? "+" : "-"}{currency(transaction.amount)}</span>
                 </div>
                 );
               })}

@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="px-4 py-4 text-center text-sm text-slate-500 dark:text-slate-500">
+      <div className="px-4 py-4 text-center text-sm text-slate-500 dark:text-slate-400">
         © {new Date().getFullYear()} Next Finance. Built for clearer money tracking habits.
       </div>
     </footer>

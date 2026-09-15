@@ -40,7 +40,7 @@ export default function BudgetClient({ items, categories }) {
         <Input name="monthly_limit" type="number" min="1" step="1" placeholder="Monthly limit" required />
         <Button disabled={pending}>Save budget</Button>
       </form>
-      {error && <p className="text-sm text-rose-400">{error}</p>}
+      {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
 
       <ul className="space-y-3">
         {items.length === 0 && (
