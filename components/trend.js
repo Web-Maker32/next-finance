@@ -13,7 +13,7 @@ const colors = {
     label: "text-rose-700 dark:text-rose-400",
     chip: "bg-rose-500/10",
   },
-  Savings: {
+  Saving: {
     label: "text-sky-700 dark:text-sky-400",
     chip: "bg-sky-500/10",
   },
