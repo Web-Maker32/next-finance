@@ -41,7 +41,7 @@ export default async function Page({ params }) {
         </p>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b1120]/80 sm:p-6">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs dark:border-white/10 dark:bg-[#0b1120]/80 sm:p-6">
         <TransactionForm initialData={transaction} />
       </div>
     </div>

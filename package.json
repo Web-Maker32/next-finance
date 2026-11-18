@@ -7,34 +7,34 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "json-server": "json-server --watch db.json --port 3100 --delay 3000"
+    "json-server": "json-server db.json --port 3100"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
-    "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.105.3",
-    "framer-motion": "^13.1.1",
-    "json-server": "^0.17.4",
-    "lucide-react": "^0.400.0",
-    "next": "16.2.1",
+    "@hookform/resolvers": "^7.0.7",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
+    "framer-motion": "^14.14.0",
+    "json-server": "^1.0.0-beta.15",
+    "lucide-react": "^1.74.0",
+    "next": "16.4.6",
     "next-themes": "^0.4.6",
-    "react": "19.2.4",
+    "react": "19.3.1",
     "react-cookie": "^8.1.0",
-    "react-dom": "19.2.4",
-    "react-error-boundary": "^6.1.1",
-    "react-hook-form": "^7.75.0",
+    "react-dom": "19.3.1",
+    "react-error-boundary": "^6.1.6",
+    "react-hook-form": "^7.92.0",
     "universal-cookie": "^8.1.0",
-    "zod": "^4.4.2"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@faker-js/faker": "^10.4.0",
+    "@faker-js/faker": "^10.6.0",
     "@tailwindcss/forms": "^0.5.11",
-    "autoprefixer": "^10.4.0",
-    "dotenv": "^17.4.2",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.1",
-    "postcss": "^8.4.0",
-    "tailwindcss": "^3.4.0"
+    "@tailwindcss/postcss": "^4.3.5",
+    "dotenv": "^18.0.10",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.4.6",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5"
   },
   "packageManager": "pnpm@11.21.0+sha512.521705bce689924eac72f5a3587122f362689ef6571e55ba80076fd637c11132ecffada26fad4ea79c485bfddbfd3d5a2a5b05805a77e893de71ec8a6cca3bb1"
 }

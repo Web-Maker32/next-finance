@@ -59,7 +59,7 @@ export default function CategorySelect({
       )}
       <button
         type="button"
-        className={`flex h-11 w-full items-center justify-between rounded-xl border border-slate-300 bg-white px-3 text-left text-sm tracking-wide text-slate-900 shadow-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 ${!selected ? "text-slate-500 dark:text-slate-400" : ""}`}
+        className={`flex h-11 w-full items-center justify-between rounded-xl border border-slate-300 bg-white px-3 text-left text-sm tracking-wide text-slate-900 shadow-xs outline-hidden transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 ${!selected ? "text-slate-500 dark:text-slate-400" : ""}`}
         aria-expanded={open}
         aria-haspopup="listbox"
         disabled={disabled}
@@ -82,7 +82,7 @@ export default function CategorySelect({
               type="button"
               role="option"
               aria-selected={option === selected}
-              className={`w-full rounded-lg px-3 py-2 text-left text-sm transition hover:bg-sky-50 focus:bg-sky-50 focus:outline-none dark:hover:bg-sky-500/10 dark:focus:bg-sky-500/10 ${option === selected ? "bg-sky-50 font-medium text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "text-slate-700 dark:text-slate-200"}`}
+              className={`w-full rounded-lg px-3 py-2 text-left text-sm transition hover:bg-sky-50 focus:bg-sky-50 focus:outline-hidden dark:hover:bg-sky-500/10 dark:focus:bg-sky-500/10 ${option === selected ? "bg-sky-50 font-medium text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "text-slate-700 dark:text-slate-200"}`}
               onClick={() => selectOption(option)}
             >
               {option}

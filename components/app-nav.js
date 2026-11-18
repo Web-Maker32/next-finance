@@ -44,8 +44,8 @@ export default function AppNav() {
         href={href}
         aria-current={active ? "page" : undefined}
         onClick={() => setMoreOpen(false)}
-        className={`${className} inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#05070f] ${active
-            ? "bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900"
+        className={`${className} inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#05070f] ${active
+            ? "bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900"
             : "text-slate-600 hover:bg-slate-200/70 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
           }`}
       >

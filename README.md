@@ -16,7 +16,7 @@ A modern personal finance dashboard built with Next.js and Supabase. It helps us
 
 - Next.js 16 (App Router)
 - React 19
-- Tailwind CSS
+- Tailwind CSS 4
 - Supabase for auth and database
 - Framer Motion for interface polish
 - JSON Server for local mock data support
@@ -39,14 +39,14 @@ A modern personal finance dashboard built with Next.js and Supabase. It helps us
 ├── next.config.mjs
 ├── package.json
 ├── pnpm-lock.yaml
-├── tailwind.config.js
+├── postcss.config.mjs
 ├── README.md
 └── ...
 ```
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22.12+
 - pnpm (recommended) or npm
 - A Supabase project
 

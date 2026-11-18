@@ -93,7 +93,7 @@ export default function TransactionItem({
             aria-labelledby={`delete-title-${id}`}
             aria-describedby={`delete-description-${id}`}
             tabIndex={-1}
-            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 outline-none dark:border-white/10 dark:bg-[#0b1120]"
+            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 outline-hidden dark:border-white/10 dark:bg-[#0b1120]"
             onMouseDown={(event) => event.stopPropagation()}
           >
             <h2 id={`delete-title-${id}`} className="text-lg font-semibold text-slate-900 dark:text-white">
